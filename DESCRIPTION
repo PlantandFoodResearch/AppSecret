@@ -1,0 +1,20 @@
+Package: AppSecret
+Type: Package
+Title: What the Package Does (Title Case)
+Version: 0.1.0
+Authors@R: c(
+  person("Roy", "Storey", email = "roy.storey@plantandfood.co.nz", role = c("aut", "cre")))
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: MIT + file LICENSE
+Imports:
+    base64enc,
+    PKI,
+    R6 (>= 2.2.0)
+Encoding: UTF-8
+LazyData: true
+Suggests:
+    roxygen2 (>= 6.0.1),
+    testthat
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.0.1
