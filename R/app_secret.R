@@ -48,6 +48,9 @@ app_secret_manager <- function(symmetric_file, key_file) {
               if(file.exists(file)) {
                 return(private$decrypt_sym_key())
               }
+              if(!dir.exists(dirname(file))) {
+                dir.create(dirname(file), recursive = TRUE)
+              }
               symmetric_password <-
                 PKI::PKI.encrypt(charToRaw(base64encode(PKI::PKI.random(32))), key = self$key)
               writeBin(symmetric_password, con = file, raw())
