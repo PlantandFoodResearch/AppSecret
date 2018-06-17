@@ -16,10 +16,11 @@ app_secret_manager <- function(symmetric_file, key_file) {
           class = FALSE,
           cloneable = FALSE,
           private = list(
+            rsa_password = charToRaw(""),
             ## decrypt symmetric key from disk
             decrypt_sym_key = function() {
-              if(length(self$rsa_password) > 1) {
-                return(self$rsa_password)
+              if(length(private$rsa_password) > 1) {
+                return(private$rsa_password)
               }
               if(!file.exists(self$symmetric_file)) {
                 return(NA)
@@ -37,7 +38,7 @@ app_secret_manager <- function(symmetric_file, key_file) {
               )
               if(class(caught) == "raw") {
                 message("decrypting symmetric file success")
-                self$rsa_password <- caught
+                private$rsa_password <- caught
               }
               return(caught)
             },
@@ -57,13 +58,12 @@ app_secret_manager <- function(symmetric_file, key_file) {
             symmetric_file = NA_character_,
             key_file       = NA_character_,
             key            = NULL,
-            rsa_password   = charToRaw(""),
             ## initialisation
             initialize = function(symmetric_file = "symmetric.rsa",
                                   key_file = NA_character_) {
-              self$rsa_password   <- charToRaw("")
-              self$symmetric_file <- symmetric_file
-              self$key_file       <- key_file
+              private$rsa_password <- charToRaw("")
+              self$symmetric_file  <- symmetric_file
+              self$key_file        <- key_file
               if(is.na(key_file) == FALSE) {
                 ## load key file if exists
                 if (file.exists(key_file)) {
@@ -92,14 +92,17 @@ app_secret_manager <- function(symmetric_file, key_file) {
               self$key
             },
 
-            ## decrypt data
+            ## decrypt data - returns raw()
             decrypt_data = function(data) {
               decrypted <- PKI::PKI.decrypt(data,
                                             key    = private$encrypt_sym_key_decrypt(),
                                             cipher = "aes256cbc")
               decrypted
             },
-
+            ## decrypt a file - returns characters
+            decrypt_file = function(file) {
+              rawToChar(self$decrypt_data(self$read_encrypted(file)))
+            },
             ## encrypt data func
             encrypt_data = function(data) {
               encrypted <- NA
@@ -125,7 +128,22 @@ app_secret_manager <- function(symmetric_file, key_file) {
               }
               encrypted
             },
-            encrypt_file = function(file, n = 1e3) {
-              self$encrypt_data(paste(readLines(con = file, n = n), collapse = "\n"))
+            ## encrypt a file - returns raw
+            encrypt_file = function(file) {
+              self$encrypt_data(paste(readLines(con = file, n = file.size(file)), collapse = "\n"))
+            },
+
+            read_encrypted = function(file) {
+              if (! file.exists(file)) {
+                return(charToRaw(""))
+              }
+              readBin(con = file, n = file.size(file), raw())
+            },
+
+            write_encrypted = function(data, file = tempfile()) {
+              if(! is.raw(data)) {
+                stop("data should be raw format")
+              }
+              writeBin(data, con = file, raw())
             }
           ))
