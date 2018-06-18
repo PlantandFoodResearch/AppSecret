@@ -1,8 +1,15 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
-
 language: R
 sudo: false
 cache: packages
 
+env:
+  global:
+    - CI_NAME=travis-pro
+    - secure: Ci43b3Has0qXyGsRN3bg9aJIVxhujZl6zQe0x0RooVLN8j7EZKnVLgfnzCdUX8e9aE9Tbc0afXiLd/JUg3OSu9HmbBXlyO8cCmM6RkVQ49aV46/WhdtLbDftSZjTLDjo927LvzGFOvbhRewfUqbDrqXupEV6vJAXWH/AEimeCT4BTHOArflLQZOOMGByncFGn0KwEJmMZgOhnKOYmpFHv7sDUltg43CJyLUPQaumULtgtHQZJdJWo59AqMrBEOnDvm5rSfF130L7xF1JxtG5H6wnYFtf3DlMTxVxfdeHTf/M973qGkQsxg4Jxs7t88FesrghbI8vpWenHh1NMNjHAl6zHIW0CwaEcMsTP2MImJ2QU4LzH3odIoK6pQEXmH+ImwA38S5y+9EWAfM3lguwHzQLCQNy/7pZ5Ji2t298hhfJamMRBHEJWxyBV+o3gtQ8w3WhKRy/xax0wx9o3emEK63GzE0FO+bWgIkWk3Hr9q5iXtW5+p1Ht4AWAF9no9ItFZHd/IiC1L3FBtrc3CJxYu9qwaVVoMIjGfy08mkvnwZeUqeYFvkEpEnVbNm/PjnZpNdcY9d3LLkvOOV9eJRkE4A0ehGHcAyc6TCHE3IlUmYNgcHxf00wPSDu1a6AAqNZawTtZ0u2PCRUToKerti9cgqbmYcskqxvlXmfDX3X/Uo=
+
+r_github_packages:
+  - r-lib/covr
+
 after_success:
+  - export CI_BRANCH=$TRAVIS_BRANCH
   - Rscript -e 'covr::coveralls()'
