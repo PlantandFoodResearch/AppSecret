@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Travis build status](https://travis-ci.org/PlantandFoodResearch/AppSecret.svg?branch=master)](https://travis-ci.org/PlantandFoodResearch/AppSecret) [![Coverage status](https://coveralls.io/repos/github/PlantandFoodResearch/AppSecret/badge.svg)](https://coveralls.io/r/PlantandFoodResearch/AppSecret?branch=master)
+[![Travis build status](https://travis-ci.com/PlantandFoodResearch/AppSecret.svg?token=Kpqpmk91fYg5k9hdqK3y&branch=master)](https://travis-ci.com/PlantandFoodResearch/AppSecret) [![Coverage Status](https://coveralls.io/repos/github/PlantandFoodResearch/AppSecret/badge.svg?branch=master&t=Z7xp1S)](https://coveralls.io/github/PlantandFoodResearch/AppSecret?branch=master)
 
 AppSecret
 =========
@@ -50,8 +50,8 @@ file.exists(password_file)
 #> [1] TRUE
 
 asm$read_encrypted(password_file)
-#>  [1] aa 84 65 d2 b7 9d fb 43 4a 9b 4e e2 76 45 2c a3 3c 3d 93 0b 55 ba 8a
-#> [24] e4 40 c1 8e 54 4e 4d 84 8b
+#>  [1] 8e 9a 93 b3 09 ac 15 2d 14 82 3d d3 a2 39 15 49 a9 44 f5 ee a6 7a 09
+#> [24] bd ee ca 71 e5 3f ec 24 17
 ```
 
 Somewhere in your application

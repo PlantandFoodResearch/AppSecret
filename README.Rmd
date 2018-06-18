@@ -4,8 +4,8 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-[![Travis build status](https://travis-ci.org/PlantandFoodResearch/AppSecret.svg?branch=master)](https://travis-ci.org/PlantandFoodResearch/AppSecret)
-[![Coverage status](https://coveralls.io/repos/github/PlantandFoodResearch/AppSecret/badge.svg)](https://coveralls.io/r/PlantandFoodResearch/AppSecret?branch=master)
+[![Travis build status](https://travis-ci.com/PlantandFoodResearch/AppSecret.svg?token=Kpqpmk91fYg5k9hdqK3y&branch=master)](https://travis-ci.com/PlantandFoodResearch/AppSecret)
+[![Coverage Status](https://coveralls.io/repos/github/PlantandFoodResearch/AppSecret/badge.svg?branch=master&t=Z7xp1S)](https://coveralls.io/github/PlantandFoodResearch/AppSecret?branch=master)
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
