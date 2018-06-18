@@ -1,11 +1,12 @@
 Package: AppSecret
 Type: Package
-Title: What the Package Does (Title Case)
+Title: R6 package to work with PKI and AES-256-CBC
 Version: 0.1.0
 Authors@R: c(
   person("Roy", "Storey", email = "roy.storey@plantandfood.co.nz", role = c("aut", "cre")))
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: The goal of AppSecret is to manage application secrets for
+    users, be they developers or test/production service users.
+BugReports: https://github.com/PlantandFoodResearch/AppSecret/issues
 License: MIT + file LICENSE
 Imports:
     base64enc,
