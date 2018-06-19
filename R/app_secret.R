@@ -8,14 +8,14 @@
 #' @export
 #'
 app_secret_manager <- function(symmetric_file, key_file) {
-  .app_secret$new(symmetric_file = symmetric_file, key_file = key_file)
+  app_secret$new(symmetric_file = symmetric_file, key_file = key_file)
 }
 
-.app_secret <-
-  R6Class("app_secret",
-          class = FALSE,
+app_secret <-
+  R6::R6Class("app_secret", # nolint
+          class     = FALSE,
           cloneable = FALSE,
-          private = list(
+          private   = list(
             rsa_password = charToRaw(""),
             ## decrypt symmetric key from disk
             decrypt_sym_key = function() {
@@ -31,7 +31,7 @@ app_secret_manager <- function(symmetric_file, key_file) {
                   PKI::PKI.decrypt(contents, key = self$key)
                 },
                 error = function(cond) {
-                  message("decrypting symmetric file failed")
+                  warning("decrypting symmetric file failed")
                   message(cond)
                 },
                 finally = {}
@@ -49,11 +49,13 @@ app_secret_manager <- function(symmetric_file, key_file) {
                 return(private$decrypt_sym_key())
               }
               if(!dir.exists(dirname(file))) {
-                dir.create(dirname(file), recursive = TRUE)
+                success <- dir.create(dirname(file), recursive = TRUE)
+                if (!success) stop("failed to create directory", call. = FALSE)
               }
               symmetric_password <-
                 PKI::PKI.encrypt(charToRaw(base64encode(PKI::PKI.random(32))), key = self$key)
               writeBin(symmetric_password, con = file, raw())
+
               return(private$decrypt_sym_key())
             }
           ),
@@ -86,7 +88,8 @@ app_secret_manager <- function(symmetric_file, key_file) {
               self$key      <- PKI::PKI.genRSAkey(2048)
               # write to disk
               if(!dir.exists(dirname(self$key_file))) {
-                dir.create(dirname(self$key_file), recursive = TRUE)
+                success <- dir.create(dirname(self$key_file), recursive = TRUE)
+                if (!success) stop("failed to create directory", call. = FALSE)
               }
               PKI::PKI.save.key(key = self$key, format = "PEM", private = TRUE,
                                 target = self$key_file)
@@ -97,9 +100,17 @@ app_secret_manager <- function(symmetric_file, key_file) {
 
             ## decrypt data - returns raw()
             decrypt_data = function(data) {
-              decrypted <- PKI::PKI.decrypt(data,
-                                            key    = private$encrypt_sym_key_decrypt(),
-                                            cipher = "aes256cbc")
+              decrypted <- tryCatch({
+                PKI::PKI.decrypt(data,
+                                 key    = private$encrypt_sym_key_decrypt(),
+                                 cipher = "aes256cbc")
+                },
+                error = function(cond) {
+                  message("decryption failed")
+                  message(cond)
+                },
+                finally = {}
+              )
               decrypted
             },
             ## decrypt a file - returns characters
@@ -110,23 +121,24 @@ app_secret_manager <- function(symmetric_file, key_file) {
             encrypt_data = function(data) {
               encrypted <- NA
               if(class(data) == "character") {
-                tryCatch({
-                  encrypted <- PKI::PKI.encrypt(charToRaw(data),
-                                                key    = private$encrypt_sym_key_decrypt(),
-                                                cipher = "aes256cbc")
+                encrypted <- tryCatch({
+                  PKI::PKI.encrypt(charToRaw(data),
+                                   key    = private$encrypt_sym_key_decrypt(),
+                                   cipher = "aes256cbc")
                 },
                 error = function(cond) {
                   message("encryption failed")
                   message(cond)
                 })
               } else {
-                tryCatch({
-                  encrypted <- PKI::PKI.encrypt(data,
-                                                key    = private$encrypt_sym_key_decrypt(),
-                                                cipher = "aes256cbc")
+                encrypted <- tryCatch({
+                  PKI::PKI.encrypt(data,
+                                   key    = private$encrypt_sym_key_decrypt(),
+                                   cipher = "aes256cbc")
                 },
                 error = function(cond) {
                   message("encryption failed")
+                  message(cond)
                 })
               }
               encrypted

@@ -45,3 +45,10 @@ test_that("decrypting a file", {
                paste(rep("something", 30), collapse = "\n"),
                label = "30 somethings")
 })
+
+test_that("encrypting raw data", {
+  asm <- app_secret_manager(symmetric_file = test_sym_file,
+                            key_file       = test_key_file)
+  enc <- asm$encrypt_data(charToRaw("this is my long password"))
+  expect_equal(1, 1)
+})
