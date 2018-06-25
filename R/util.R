@@ -3,13 +3,16 @@ app_secret_paths <- function(appname = NULL, base_path = Sys.getenv("HOME")) {
   if (is.null(appname)) {
     stop("Cannot continue without an application name", call. = FALSE)
   }
+  if (length(appname) != 1) {
+    stop("appname should be a character vector of length 1", call. = FALSE)
+  }
   app_dot_dir <- paste(".", appname, sep = "")
   
   if (Sys.getenv("USE_HERE")) {
     sym_name <- paste(Sys.getenv("USER"), "symmetric.rsa", sep = ".")
     vault <- file.path(here(), ".user-settings") 
   } else {
-    sym_name <- "symmetric_rsa"
+    sym_name <- "symmetric.rsa"
     vault    <- file.path(base_path, app_dot_dir)
   }
   
