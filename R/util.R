@@ -1,4 +1,14 @@
 
+#' app_secret_paths
+#'
+#' Create paths as a utility and set of rules/expectations. Useful when trying to enforce a convention.
+#'
+#' @param appname    The application name
+#' @param base_path  The base path to use for storing the symmetric and encrypted files
+#'
+#' Influential environment variables \code{USE_HERE}
+#'
+#' @export
 app_secret_paths <- function(appname = NULL, base_path = Sys.getenv("HOME")) {
   if (is.null(appname)) {
     stop("Cannot continue without an application name", call. = FALSE)
