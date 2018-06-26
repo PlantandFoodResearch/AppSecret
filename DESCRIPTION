@@ -1,6 +1,6 @@
 Package: AppSecret
 Type: Package
-Title: R6 package to work with PKI and AES-256-CBC
+Title: R6 Package to Work with PKI and AES-256-CBC
 Version: 0.1.0
 Authors@R: c(
   person("Roy", "Storey", email = "roy.storey@plantandfood.co.nz", role = c("aut", "cre")))
@@ -10,6 +10,7 @@ BugReports: https://github.com/PlantandFoodResearch/AppSecret/issues
 License: MIT + file LICENSE
 Imports:
     base64enc,
+    here,
     PKI,
     R6 (>= 2.2.0)
 Encoding: UTF-8
@@ -17,6 +18,7 @@ LazyData: true
 Suggests: 
     roxygen2 (>= 6.0.1),
     testthat,
-    covr
+    covr,
+    withr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1

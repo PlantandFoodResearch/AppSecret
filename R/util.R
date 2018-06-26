@@ -32,6 +32,7 @@
 #'   paths <- app_secret_paths(appname = "dull-app", base_path = file.path(here()))
 #' }
 #'
+#' @importFrom here here
 #' @export
 app_secret_paths <- function(appname = NULL, base_path = Sys.getenv("HOME")) {
   if (is.null(appname)) {
@@ -41,15 +42,15 @@ app_secret_paths <- function(appname = NULL, base_path = Sys.getenv("HOME")) {
     stop("appname should be a character vector of length 1", call. = FALSE)
   }
   app_dot_dir <- paste(".", appname, sep = "")
-  
-  if (Sys.getenv("USE_HERE")) {
+
+  if (Sys.getenv("USE_HERE", "") != "") {
     sym_name <- paste(Sys.getenv("USER"), "symmetric.rsa", sep = ".")
-    vault    <- file.path(here(), ".user-settings") 
+    vault    <- file.path(here(), ".user-settings")
   } else {
     sym_name <- "symmetric.rsa"
     vault    <- file.path(base_path, app_dot_dir)
   }
-  
+
   return(
     list(
       symmetric_file = file.path(vault, sym_name),
