@@ -20,7 +20,8 @@ Influential environment variables \code{USE_HERE}
 Create paths as a utility and set of rules/expectations. Useful when trying to enforce a convention.
 }
 \examples{
-\\donotrun{
+
+\dontrun{
   # list(symmetric_file = "/home/user/.best-shiny-app-ever/symmetric.rsa",
   #      key_file       = "/home/user/.best-shiny-app-ever/secret.pem",
   #      vault          = "/home/user/.best-shiny-app-ever")
