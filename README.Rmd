@@ -83,4 +83,20 @@ paths <- app_secret_paths(appname = "your-app-name")
 str(paths)
 ```
 
+The `here()` function from the `here` package can be used by adding a value to the environment variable `APP_SECRET_USE_HERE` so that files can be stored with the application code. This is safe to do as the key pair will always be stored under a user's home directory.
+
+```{r utility-usage-with-here}
+## using withr to safely temporarily set the variable in markdown
+withr::with_envvar(c("APP_SECRET_USE_HERE" = 1), {
+  paths <- app_secret_paths(appname = "another-name")
+  str(paths)
+})
+```
+
+If the `.user-settings` path is not a desireable name the `base_path` argument may be passed.
+
+```{r utility-usage-with-basepath}
+paths <- app_secret_paths(appname = "your-app-name", base_path = here::here())
+str(paths)
+```
 

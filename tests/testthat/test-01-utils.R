@@ -21,7 +21,7 @@ test_that("everything under HOME", {
 
 
 test_that("using here()", {
-  withr::with_envvar(c("USE_HERE" = 1), {
+  withr::with_envvar(c("APP_SECRET_USE_HERE" = 1), {
     here_dir <- here::here()
     exp_paths <- list(
       symmetric_file = file.path(here_dir, ".user-settings", paste0(Sys.getenv("USER"),".symmetric.rsa")),

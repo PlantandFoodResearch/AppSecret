@@ -14,7 +14,7 @@ app_secret_paths(appname = NULL, base_path = Sys.getenv("HOME"))
 \value{
 list()
 
-Influential environment variables \code{USE_HERE}
+Influential environment variables \code{APP_SECRET_USE_HERE}
 }
 \description{
 Create paths as a utility and set of rules/expectations. Useful when trying to enforce a convention.
@@ -26,14 +26,14 @@ Create paths as a utility and set of rules/expectations. Useful when trying to e
   #      key_file       = "/home/user/.best-shiny-app-ever/secret.pem",
   #      vault          = "/home/user/.best-shiny-app-ever")
 
-  Sys.setenv("USE_HERE"="1")
+  Sys.setenv("APP_SECRET_USE_HERE"="1")
   here::set_here(path = "/apps/another-shiny-app")
   # list(symmetric_file = "/apps/another-shiny-app/.user-settings/user.symmetric.rsa",
   #      key_file       = "/home/user/.best-shiny-app-ever/secret.pem",
   #      vault          = "/apps/another-shiny-app/.user-settings")
   paths <- app_secret_paths(appname = "another-shiny-app")
 
-  Sys.unsetenv("USE_HERE")
+  Sys.unsetenv("APP_SECRET_USE_HERE")
   here::set_here(path = "/apps/dull-app")
   # list(symmetric_file = "/apps/dull-app/.dull-app/user.symmetric.rsa",
   #      key_file       = "/home/user/.dull-app/secret.pem",

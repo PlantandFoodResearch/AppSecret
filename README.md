@@ -83,3 +83,28 @@ str(paths)
 #>  $ key_file      : chr "/Users/hrards/.your-app-name/secret.pem"
 #>  $ vault_path    : chr "/Users/hrards/.your-app-name"
 ```
+
+The `here()` function from the `here` package can be used by adding a value to the environment variable `APP_SECRET_USE_HERE` so that files can be stored with the application code. This is safe to do as the key pair will always be stored under a user's home directory.
+
+``` r
+## using withr to safely temporarily set the variable in markdown
+withr::with_envvar(c("APP_SECRET_USE_HERE" = 1), {
+  paths <- app_secret_paths(appname = "another-name")
+  str(paths)
+})
+#> List of 3
+#>  $ symmetric_file: chr "/Users/hrards/code/AppSecret/.user-settings/hrards.symmetric.rsa"
+#>  $ key_file      : chr "/Users/hrards/.another-name/secret.pem"
+#>  $ vault_path    : chr "/Users/hrards/code/AppSecret/.user-settings"
+```
+
+If the `.user-settings` path is not a desireable name the `base_path` argument may be passed.
+
+``` r
+paths <- app_secret_paths(appname = "your-app-name", base_path = here::here())
+str(paths)
+#> List of 3
+#>  $ symmetric_file: chr "/Users/hrards/code/AppSecret/.your-app-name/symmetric.rsa"
+#>  $ key_file      : chr "/Users/hrards/.your-app-name/secret.pem"
+#>  $ vault_path    : chr "/Users/hrards/code/AppSecret/.your-app-name"
+```

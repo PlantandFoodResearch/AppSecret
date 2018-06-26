@@ -8,7 +8,7 @@
 #'
 #' @return list()
 #'
-#' Influential environment variables \code{USE_HERE}
+#' Influential environment variables \code{APP_SECRET_USE_HERE}
 #'
 #' @examples
 #'
@@ -18,14 +18,14 @@
 #'   #      vault          = "/home/user/.best-shiny-app-ever")
 #    paths <- app_secret_paths(appname = "best-shiny-app-ever")
 #'
-#'   Sys.setenv("USE_HERE"="1")
+#'   Sys.setenv("APP_SECRET_USE_HERE"="1")
 #'   here::set_here(path = "/apps/another-shiny-app")
 #'   # list(symmetric_file = "/apps/another-shiny-app/.user-settings/user.symmetric.rsa",
 #'   #      key_file       = "/home/user/.best-shiny-app-ever/secret.pem",
 #'   #      vault          = "/apps/another-shiny-app/.user-settings")
 #'   paths <- app_secret_paths(appname = "another-shiny-app")
 #'
-#'   Sys.unsetenv("USE_HERE")
+#'   Sys.unsetenv("APP_SECRET_USE_HERE")
 #'   here::set_here(path = "/apps/dull-app")
 #'   # list(symmetric_file = "/apps/dull-app/.dull-app/user.symmetric.rsa",
 #'   #      key_file       = "/home/user/.dull-app/secret.pem",
@@ -44,7 +44,7 @@ app_secret_paths <- function(appname = NULL, base_path = Sys.getenv("HOME")) {
   }
   app_dot_dir <- paste(".", appname, sep = "")
 
-  if (Sys.getenv("USE_HERE", "") != "") {
+  if (Sys.getenv("APP_SECRET_USE_HERE", "") != "") {
     sym_name <- paste(Sys.getenv("USER"), "symmetric.rsa", sep = ".")
     vault    <- file.path(here(), ".user-settings")
   } else {
