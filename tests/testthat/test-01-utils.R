@@ -16,6 +16,10 @@ test_that("everything under HOME", {
 
   paths <- app_secret_paths(appname = appname)
   expect_equal(paths, exp_paths, label = "paths are subdirs of HOME")
+
+  appname <- "Shiny-Web-App"
+  paths   <- app_secret_paths(appname = appname)
+  expect_equal(paths, exp_paths, label = "paths are subdirs of HOME")
 })
 
 

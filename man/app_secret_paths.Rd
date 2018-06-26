@@ -7,7 +7,7 @@
 app_secret_paths(appname = NULL, base_path = Sys.getenv("HOME"))
 }
 \arguments{
-\item{appname}{The application name}
+\item{appname}{The application name, this will be prepended with a '.', and forced to be lowercase}
 
 \item{base_path}{The base path to use for storing the symmetric and encrypted files}
 }
@@ -23,21 +23,18 @@ Create paths as a utility and set of rules/expectations. Useful when trying to e
 
 \dontrun{
   # list(symmetric_file = "/home/user/.best-shiny-app-ever/symmetric.rsa",
-  #      key_file       = "/home/user/.best-shiny-app-ever/secret.pem",
-  #      vault          = "/home/user/.best-shiny-app-ever")
+  #      key_file       = "/home/user/.best-shiny-app-ever/secret.pem")
 
   Sys.setenv("APP_SECRET_USE_HERE"="1")
   here::set_here(path = "/apps/another-shiny-app")
-  # list(symmetric_file = "/apps/another-shiny-app/.user-settings/user.symmetric.rsa",
-  #      key_file       = "/home/user/.best-shiny-app-ever/secret.pem",
-  #      vault          = "/apps/another-shiny-app/.user-settings")
+  # list(symmetric_file = "/apps/another-shiny-app/.user-settings/user/symmetric.rsa",
+  #      key_file       = "/home/user/.best-shiny-app-ever/secret.pem")
   paths <- app_secret_paths(appname = "another-shiny-app")
 
   Sys.unsetenv("APP_SECRET_USE_HERE")
   here::set_here(path = "/apps/dull-app")
   # list(symmetric_file = "/apps/dull-app/.dull-app/user.symmetric.rsa",
-  #      key_file       = "/home/user/.dull-app/secret.pem",
-  #      vault          = "/apps/dull-app/.dull-app")
+  #      key_file       = "/home/user/.dull-app/secret.pem")
   paths <- app_secret_paths(appname = "dull-app", base_path = file.path(here()))
 }
 

@@ -3,7 +3,7 @@
 #'
 #' Create paths as a utility and set of rules/expectations. Useful when trying to enforce a convention.
 #'
-#' @param appname    The application name
+#' @param appname    The application name, this will be prepended with a '.', and forced to be lowercase
 #' @param base_path  The base path to use for storing the symmetric and encrypted files
 #'
 #' @return list()
@@ -33,13 +33,13 @@
 #' @importFrom here here
 #' @export
 app_secret_paths <- function(appname = NULL, base_path = Sys.getenv("HOME")) {
-  if (is.null(appname)) {
+  if (missing(appname)) {
     stop("Cannot continue without an application name", call. = FALSE)
   }
   if (length(appname) != 1) {
     stop("appname should be a character vector of length 1", call. = FALSE)
   }
-  app_dot_dir <- paste(".", appname, sep = "")
+  app_dot_dir <- paste(".", tolower(appname), sep = "")
   sym_name <- "symmetric.rsa"
   if (Sys.getenv("APP_SECRET_USE_HERE", "") != "") {
     vault <- file.path(here(), ".user-settings", Sys.getenv("USER"))
