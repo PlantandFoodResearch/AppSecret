@@ -4,12 +4,14 @@
 \alias{app_secret_manager}
 \title{app_secret_manager}
 \usage{
-app_secret_manager(symmetric_file, key_file)
+app_secret_manager(symmetric_file, key_file, ...)
 }
 \arguments{
 \item{symmetric_file}{path to symmetric file}
 
 \item{key_file}{path to PEM format key file}
+
+\item{...}{compatibility with \code{app_secret_paths} and \code{do.call}}
 }
 \value{
 app_secret instance

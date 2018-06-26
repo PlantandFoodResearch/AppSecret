@@ -50,8 +50,8 @@ file.exists(password_file)
 #> [1] TRUE
 
 asm$read_encrypted(password_file)
-#>  [1] 8e 9a 93 b3 09 ac 15 2d 14 82 3d d3 a2 39 15 49 a9 44 f5 ee a6 7a 09
-#> [24] bd ee ca 71 e5 3f ec 24 17
+#>  [1] d6 ff fb f9 1c ef a6 5b 33 87 39 f5 86 b2 6b d9 43 79 0a 73 94 57 55
+#> [24] 52 27 9f e0 a4 cc 3e 41 b4
 ```
 
 Somewhere in your application
@@ -69,4 +69,17 @@ password <- asm$decrypt_file(password_file)
 #> decrypting symmetric file success
 password
 #> [1] "this is my password"
+```
+
+#### `app_secret_paths`
+
+All of this path munging is not really application code's responsibility. There is a utility function `app_secret_paths` for doing this.
+
+``` r
+paths <- app_secret_paths(appname = "your-app-name")
+str(paths)
+#> List of 3
+#>  $ symmetric_file: chr "/Users/hrards/.your-app-name/symmetric.rsa"
+#>  $ key_file      : chr "/Users/hrards/.your-app-name/secret.pem"
+#>  $ vault_path    : chr "/Users/hrards/.your-app-name"
 ```

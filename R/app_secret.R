@@ -3,11 +3,12 @@
 #'
 #' @param symmetric_file path to symmetric file
 #' @param key_file path to PEM format key file
+#' @param ... compatibility with \code{app_secret_paths} and \code{do.call}
 #'
 #' @return app_secret instance
 #' @export
 #'
-app_secret_manager <- function(symmetric_file, key_file) {
+app_secret_manager <- function(symmetric_file, key_file, ...) {
   app_secret$new(symmetric_file = symmetric_file, key_file = key_file)
 }
 

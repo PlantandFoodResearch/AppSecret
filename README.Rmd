@@ -74,3 +74,13 @@ password <- asm$decrypt_file(password_file)
 password
 ```
 
+#### `app_secret_paths`
+
+All of this path munging is not really application code's responsibility. There is a utility function `app_secret_paths` for doing this.
+
+```{r utility-usage}
+paths <- app_secret_paths(appname = "your-app-name")
+str(paths)
+```
+
+
