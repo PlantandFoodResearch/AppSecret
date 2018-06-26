@@ -17,9 +17,8 @@
 #'   #      vault          = "/home/user/.best-shiny-app-ever")
 #    paths <- app_secret_paths(appname = "best-shiny-app-ever")
 #'
-#'   Sys.getenv("USE_HERE"="1")
-#'   # TRUE
-#'   file.exists("/apps/another-shiny-app/.here")
+#'   Sys.setenv("USE_HERE"="1")
+#'   here::set_here(path = "/apps/another-shiny-app")
 #'   # list(symmetric_file = "/apps/another-shiny-app/.user-settings/user.symmetric.rsa",
 #'   #      key_file       = "/home/user/.best-shiny-app-ever/secret.pem",
 #'   #      vault          = "/apps/another-shiny-app/.user-settings")
