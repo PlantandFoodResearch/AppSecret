@@ -26,6 +26,7 @@ app_secret <-
                 return(NA)
               }
               contents <- readBin(con = self$symmetric_file, raw(), n = 256, size = 1)
+              ## https://stackoverflow.com/a/12195574/7456461 for tryCatch example
               caught <- tryCatch(
                 {
                   PKI::PKI.decrypt(contents, key = self$key)
@@ -33,6 +34,7 @@ app_secret <-
                 error = function(cond) {
                   warning("decrypting symmetric file failed")
                   message(cond)
+                  return(NA)
                 },
                 finally = {}
               )
@@ -129,6 +131,7 @@ app_secret <-
                 error = function(cond) {
                   message("encryption failed")
                   message(cond)
+                  return(NA)
                 })
               } else {
                 encrypted <- tryCatch({
