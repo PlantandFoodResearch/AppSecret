@@ -33,13 +33,16 @@ This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(here)
-#> here() starts at /Users/hrards/code/AppSecret
 library(AppSecret)
 
 password_file <- file.path(here(), ".user-settings", Sys.getenv("USER"), "password")
 
 asm <- app_secret_manager(symmetric_file = file.path(here(), ".user-settings", Sys.getenv("USER"), "symmetric.rsa"),
-                          key_file       = file.path(Sys.getenv("HOME"), ".app-name", "application-secrets.pem"))
+                          key_file       = file.path(Sys.getenv("HOME"), ".app-name", "secret.pem"))
+asm$symmetric_file
+#> [1] "/Users/hrards/code/AppSecret/.user-settings/hrards/symmetric.rsa"
+asm$key_file
+#> [1] "/Users/hrards/.app-name/secret.pem"
 
 encrypted <- asm$encrypt_data("this is my password")
 #> decrypting symmetric file success
@@ -50,8 +53,8 @@ file.exists(password_file)
 #> [1] TRUE
 
 asm$read_encrypted(password_file)
-#>  [1] d6 ff fb f9 1c ef a6 5b 33 87 39 f5 86 b2 6b d9 43 79 0a 73 94 57 55
-#> [24] 52 27 9f e0 a4 cc 3e 41 b4
+#>  [1] 40 4d ac 4c 5d b6 ce d6 2d 88 08 af 6b 52 f6 3f a7 d2 99 fc 35 aa 40
+#> [24] 7c c6 aa 44 91 de 27 28 5b
 ```
 
 Somewhere in your application
@@ -63,7 +66,7 @@ library(AppSecret)
 password_file <- file.path(here(), ".user-settings", Sys.getenv("USER"), "password")
 
 asm <- app_secret_manager(symmetric_file = file.path(here(), ".user-settings", Sys.getenv("USER"), "symmetric.rsa"),
-                          key_file       = file.path(Sys.getenv("HOME"), ".app-name", "application-secrets.pem"))
+                          key_file       = file.path(Sys.getenv("HOME"), ".app-name", "secret.pem"))
 
 password <- asm$decrypt_file(password_file)
 #> decrypting symmetric file success
@@ -78,24 +81,22 @@ All of this path munging is not really application code's responsibility. There 
 ``` r
 paths <- app_secret_paths(appname = "your-app-name")
 str(paths)
-#> List of 3
+#> List of 2
 #>  $ symmetric_file: chr "/Users/hrards/.your-app-name/symmetric.rsa"
 #>  $ key_file      : chr "/Users/hrards/.your-app-name/secret.pem"
-#>  $ vault_path    : chr "/Users/hrards/.your-app-name"
 ```
 
 The `here()` function from the `here` package can be used by adding a value to the environment variable `APP_SECRET_USE_HERE` so that files can be stored with the application code. This is safe to do as the key pair will always be stored under a user's home directory.
 
 ``` r
-## using withr to safely temporarily set the variable in markdown
+#> using withr to safely temporarily set the variable in markdown
 withr::with_envvar(c("APP_SECRET_USE_HERE" = 1), {
   paths <- app_secret_paths(appname = "another-name")
   str(paths)
 })
-#> List of 3
-#>  $ symmetric_file: chr "/Users/hrards/code/AppSecret/.user-settings/hrards.symmetric.rsa"
+#> List of 2
+#>  $ symmetric_file: chr "/Users/hrards/code/AppSecret/.user-settings/hrards/symmetric.rsa"
 #>  $ key_file      : chr "/Users/hrards/.another-name/secret.pem"
-#>  $ vault_path    : chr "/Users/hrards/code/AppSecret/.user-settings"
 ```
 
 If the `.user-settings` path is not a desireable name the `base_path` argument may be passed.
@@ -103,8 +104,26 @@ If the `.user-settings` path is not a desireable name the `base_path` argument m
 ``` r
 paths <- app_secret_paths(appname = "your-app-name", base_path = here::here())
 str(paths)
-#> List of 3
+#> List of 2
 #>  $ symmetric_file: chr "/Users/hrards/code/AppSecret/.your-app-name/symmetric.rsa"
 #>  $ key_file      : chr "/Users/hrards/.your-app-name/secret.pem"
-#>  $ vault_path    : chr "/Users/hrards/code/AppSecret/.your-app-name"
+```
+
+#### more simple application code
+
+In less than 10 lines
+
+``` r
+library(AppSecret)
+paths <- withr::with_envvar(c("APP_SECRET_USE_HERE" = 1),
+                            app_secret_paths(appname = "app-name"))
+#> create instance
+asm <- do.call(app_secret_manager, paths)
+#> where is the password file
+paths$password_file <- asm$path_in_vault("password")
+#> decrypt
+password <- asm$decrypt_file(paths$password_file)
+#> decrypting symmetric file success
+password
+#> [1] "this is my password"
 ```
