@@ -3,6 +3,7 @@
 #'
 #' @param symmetric_file path to symmetric file
 #' @param key_file path to PEM format key file
+#' @param ... compatibility with \code{app_secret_paths} and \code{do.call}
 #'
 #' @return app_secret instance
 #' @export
@@ -99,7 +100,6 @@ app_secret <-
                                 target = paste(self$key_file, "pub", sep = "."))
               self$key
             },
-
             ## decrypt data - returns raw()
             decrypt_data = function(data) {
               decrypted <- tryCatch({
@@ -151,6 +151,13 @@ app_secret <-
               self$encrypt_data(paste(readLines(con = file, n = file.size(file)), collapse = "\n"))
             },
 
+            ## helpful method to get a new filename
+            path_in_vault = function(filename = NULL) {
+              if(missing(filename)) stop("filename is required")
+              return(file.path(dirname(self$symmetric_file), filename))
+            },
+
+            ## read encrypted - absolute path please
             read_encrypted = function(file) {
               if (! file.exists(file)) {
                 return(charToRaw(""))
@@ -158,6 +165,7 @@ app_secret <-
               readBin(con = file, n = file.size(file), raw())
             },
 
+            ## write and encrypted file - absolute path please
             write_encrypted = function(data, file = tempfile()) {
               if(! is.raw(data)) {
                 stop("data should be raw format")

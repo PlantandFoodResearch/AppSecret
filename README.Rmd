@@ -8,10 +8,14 @@ output: github_document
 [![Coverage Status](https://coveralls.io/repos/github/PlantandFoodResearch/AppSecret/badge.svg?branch=master&t=Z7xp1S)](https://coveralls.io/github/PlantandFoodResearch/AppSecret?branch=master)
 
 ```{r setup, include = FALSE}
+require(here)
+require(withr)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+unlink(file.path(here::here(), '.user-settings'), recursive = TRUE)
+unlink(file.path(Sys.getenv("HOME", tempdir()), '.app-name'), recursive = TRUE)
 ```
 # AppSecret
 
@@ -48,7 +52,9 @@ library(AppSecret)
 password_file <- file.path(here(), ".user-settings", Sys.getenv("USER"), "password")
 
 asm <- app_secret_manager(symmetric_file = file.path(here(), ".user-settings", Sys.getenv("USER"), "symmetric.rsa"),
-                          key_file       = file.path(Sys.getenv("HOME"), ".app-name", "application-secrets.pem"))
+                          key_file       = file.path(Sys.getenv("HOME"), ".app-name", "secret.pem"))
+asm$symmetric_file
+asm$key_file
 
 encrypted <- asm$encrypt_data("this is my password")
 
@@ -68,9 +74,50 @@ library(AppSecret)
 password_file <- file.path(here(), ".user-settings", Sys.getenv("USER"), "password")
 
 asm <- app_secret_manager(symmetric_file = file.path(here(), ".user-settings", Sys.getenv("USER"), "symmetric.rsa"),
-                          key_file       = file.path(Sys.getenv("HOME"), ".app-name", "application-secrets.pem"))
+                          key_file       = file.path(Sys.getenv("HOME"), ".app-name", "secret.pem"))
 
 password <- asm$decrypt_file(password_file)
 password
 ```
 
+#### `app_secret_paths`
+
+All of this path munging is not really application code's responsibility. There is a utility function `app_secret_paths` for doing this.
+
+```{r utility-usage}
+paths <- app_secret_paths(appname = "your-app-name")
+str(paths)
+```
+
+The `here()` function from the `here` package can be used by adding a value to the environment variable `APP_SECRET_USE_HERE` so that files can be stored with the application code. This is safe to do as the key pair will always be stored under a user's home directory.
+
+```{r utility-usage-with-here}
+#> using withr to safely temporarily set the variable in markdown
+withr::with_envvar(c("APP_SECRET_USE_HERE" = 1), {
+  paths <- app_secret_paths(appname = "another-name")
+  str(paths)
+})
+```
+
+If the `.user-settings` path is not a desireable name the `base_path` argument may be passed.
+
+```{r utility-usage-with-basepath}
+paths <- app_secret_paths(appname = "your-app-name", base_path = here::here())
+str(paths)
+```
+
+#### more simple application code
+
+In less than 10 lines
+```{r simple-application-code}
+library(AppSecret)
+paths <- withr::with_envvar(c("APP_SECRET_USE_HERE" = 1),
+                            app_secret_paths(appname = "app-name"))
+#> create instance
+asm <- do.call(app_secret_manager, paths)
+#> where is the password file
+paths$password_file <- asm$path_in_vault("password")
+#> decrypt
+password <- asm$decrypt_file(paths$password_file)
+password
+```
