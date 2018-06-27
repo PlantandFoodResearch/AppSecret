@@ -20,6 +20,10 @@ test_that("everything under HOME", {
   appname <- "Shiny-Web-App"
   paths   <- app_secret_paths(appname = appname)
   expect_equal(paths, exp_paths, label = "paths are subdirs of HOME")
+
+  appname <- c("Shiny-Web-App", "Dull-Web-App")
+  expect_error(app_secret_paths(appname = appname),
+               "appname should be a character vector of length 1")
 })
 
 
