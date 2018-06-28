@@ -12,6 +12,8 @@ test_that("files get created", {
   asm <- app_secret_manager(symmetric_file = sym_file,
                             key_file       = key_file)
 
+  expect_false(asm$debug, label = "set to false as default")
+
   expect_true(file.exists(key_file), label = "initialised a private key")
 
   expect_false(file.exists(sym_file), label = "symmetric file not yet created")

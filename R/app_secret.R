@@ -12,6 +12,15 @@ app_secret_manager <- function(symmetric_file, key_file) {
   app_secret$new(symmetric_file = symmetric_file, key_file = key_file)
 }
 
+.generate_handler <- function (message, debug = FALSE) {
+  return(function(cond) {
+    message(message)
+    if (debug) message(as.character(cond))
+    else       message(conditionMessage(cond))
+    return(NA)
+  })
+}
+
 app_secret <-
   R6::R6Class("app_secret", # nolint
           class     = FALSE,
@@ -32,11 +41,7 @@ app_secret <-
                 {
                   PKI::PKI.decrypt(contents, key = self$key)
                 },
-                error = function(cond) {
-                  warning("decrypting symmetric file failed")
-                  message(cond)
-                  return(NA)
-                },
+                error = .generate_handler("decrypting symmetric file failed", self$debug),
                 finally = {}
               )
               if(class(caught) == "raw") {
@@ -52,7 +57,8 @@ app_secret <-
                 return(private$decrypt_sym_key())
               }
               if(!dir.exists(dirname(file))) {
-                success <- dir.create(dirname(file), recursive = TRUE)
+                success <- tryCatch({dir.create(dirname(file), recursive = TRUE)},
+                                    error = .generate_handler("dir.create", self$debug))
                 if (!success) stop("failed to create directory", call. = FALSE)
               }
               symmetric_password <-
@@ -66,6 +72,7 @@ app_secret <-
             symmetric_file = NA_character_,
             key_file       = NA_character_,
             key            = NULL,
+            debug          = FALSE,
             ## initialisation
             initialize = function(symmetric_file = "symmetric.rsa",
                                   key_file = NA_character_) {
@@ -91,7 +98,8 @@ app_secret <-
               self$key      <- PKI::PKI.genRSAkey(2048)
               # write to disk
               if(!dir.exists(dirname(self$key_file))) {
-                success <- dir.create(dirname(self$key_file), recursive = TRUE)
+                success <- tryCatch({dir.create(dirname(self$key_file), recursive = TRUE)},
+                                    error = .generate_handler("dir.create path for key file", self$debug))
                 if (!success) stop("failed to create directory", call. = FALSE)
               }
               PKI::PKI.save.key(key = self$key, format = "PEM", private = TRUE,
@@ -107,10 +115,7 @@ app_secret <-
                                  key    = private$encrypt_sym_key_decrypt(),
                                  cipher = "aes256cbc")
                 },
-                error = function(cond) {
-                  message("decryption failed")
-                  message(cond)
-                },
+                error = .generate_handler("decryption failed", self$debug),
                 finally = {}
               )
               decrypted
@@ -128,21 +133,14 @@ app_secret <-
                                    key    = private$encrypt_sym_key_decrypt(),
                                    cipher = "aes256cbc")
                 },
-                error = function(cond) {
-                  message("encryption failed")
-                  message(cond)
-                  return(NA)
-                })
+                error = .generate_handler("encryption failed", self$debug))
               } else {
                 encrypted <- tryCatch({
                   PKI::PKI.encrypt(data,
                                    key    = private$encrypt_sym_key_decrypt(),
                                    cipher = "aes256cbc")
                 },
-                error = function(cond) {
-                  message("encryption failed")
-                  message(cond)
-                })
+                error = .generate_handler("encryption failed", self$debug))
               }
               encrypted
             },
@@ -163,6 +161,18 @@ app_secret <-
                 return(charToRaw(""))
               }
               readBin(con = file, n = file.size(file), raw())
+            },
+
+            ## set the debug flag - chainable
+            set_debug = function(debug = FALSE) {
+              self$debug <- debug
+              return(invisible(self))
+            },
+
+            ## k combinator
+            tap = function(func = function(s, ...){}, ...) {
+              func(self, ...)
+              return(invisible(self))
             },
 
             ## write and encrypted file - absolute path please
