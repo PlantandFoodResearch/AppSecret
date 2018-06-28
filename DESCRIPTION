@@ -19,6 +19,9 @@ Suggests:
     roxygen2 (>= 6.0.1),
     testthat,
     covr,
-    withr
+    withr,
+    knitr,
+    rmarkdown
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1
+VignetteBuilder: knitr
