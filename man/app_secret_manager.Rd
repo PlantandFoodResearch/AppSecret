@@ -17,5 +17,5 @@ app_secret_manager(symmetric_file, key_file)
 app_secret instance
 }
 \description{
-app_secret_manager
+Create a new instance of app_secret
 }

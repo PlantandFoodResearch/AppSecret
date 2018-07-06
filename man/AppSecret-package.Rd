@@ -6,9 +6,109 @@
 \alias{AppSecret}
 \title{Application Secrets}
 \description{
-Application Secrets
+A simple way to symmetrically encrypt information and store
+on disk.
+}
+\details{
+The goal of AppSecret is to manage application secrets for users,
+be they developers or test/production service users.
+
+A PEM format public/private key pair is used to encrpyt a cryptographically
+random 32 bytes which is used as a 256bit key to encrypt any number of
+files, streams or data. The 256bit key and the encrpyted files may be stored
+with the application, either in the repository or on disk so long as the
+private key is kept secret. By default this is a user's home directory as
+defined in \code{Sys.getenv("HOME")}.
+}
+\section{Usage}{
+
+\preformatted{paths <- app_secret_paths(appname = "client-app")
+
+asm <- app_secret_manager(symmetric_file = paths$symmetric_file,
+                          key_file       = paths$key_file)
+## or
+asm <- app_secret$new(symmetric_file = paths$symmetric_file,
+                      key_file       = paths$key_file)
+
+password_file <- asm$path_in_vault(filename = "client-password.enc")
+
+decrypted_password <- asm$decrypt_file(file = password_file)
+}
+}
+
+\section{Arguments}{
+
+\code{appname} A name for the manager to use in directory names
+
+\code{symmetric_file} The path to the file that contains the symmetric
+256bit key
+
+\code{key_file} The path to the private key file in PEM format
+
+\code{filename} The name of a file to store/access in the vault
+
+\code{file} The absolute path to a file containing encrypted data
+}
+
+\section{Methods}{
+
+\code{$new(symmetric_file, key_file)} Initialise an instance of the app
+secrets manager with paths for the symmetric encryption password and
+private key file.
+
+\code{$create_keys(key_file)} Create a public/private key pair in PEM format
+for later use. The key is immediately available for use by the manager.
+
+\code{decrypt_data(data)} Decrypt \code{data}, which must be \code{raw}. The
+decrypted data will also be \code{raw}.
+
+\code{decrypt_file(file)} Decrypt the contents of \code{file} returning a
+\code{character} vector.
+
+\code{encrypt_data(data)} Encrypt \code{data}, which may be either of
+\code{class} \code{character} or \code{raw}. \code{raw} will be returned.
+
+\code{encrypt_file(file)} Encrypt the contents of \code{file}.
+
+\code{path_in_vault(filename)} Return an absolute path to a file with
+\code{filename} in the vault.
+
+\code{read_encrypted(file)} Use \code{\link{readBin}} to slurp the contents
+of \code{file}.
+
+\code{set_debug(debug)} Set the debug flag to the value of \code{debug}.
+Only useful for obtaining more information from errors at the current time.
+
+\code{tap(func)} kestrel for injecting non-chaining methods \code{func} in a
+chain.
+
+\code{write_encrypted(data, file)} Use \code{\link{writeBin}} to spurt
+\code{data} into \code{file}.
+}
+
+\examples{
+paths <- app_secret_paths(appname = "client-app")
+
+asm <- app_secret_manager(symmetric_file = paths$symmetric_file,
+                          key_file       = paths$key_file)
+
+asm <- do.call(app_secret_manager, paths)
+
+if (!file.exists(asm$path_in_vault("password.enc"))) {
+  password <- "your password" ## or use getPass::getPass() /
+                              ## rstudioapi::askForPassword()
+  encrypted <- asm$encrypt_data(password)
+  asm$write_encrypted(encrypted, asm$path_in_vault("password.enc"))
+}
+
+password <- asm$decrypt_file(asm$path_in_vault("password.enc"))
+
+
 }
 \author{
 Roy Storey \email{roy.storey@plantandfood.co.nz}
 }
+\keyword{AES-256}
+\keyword{encryption}
 \keyword{package}
+\keyword{symmetric}
