@@ -6,7 +6,7 @@ test_that("exceptions", {
 })
 
 test_that("everything under HOME", {
-  base_path <- Sys.getenv("HOME", unset = tempdir())
+  base_path <- normalizePath("~")
   appname   <- "shiny-web-app"
   dotted    <- paste0(".", appname) ## .shiny-web-app
 
@@ -32,7 +32,7 @@ test_that("using here()", {
     here_dir <- here::here()
     exp_paths <- list(
       symmetric_file = file.path(here_dir, ".user-settings", Sys.getenv("USER"), "symmetric.rsa"),
-      key_file       = file.path(Sys.getenv("HOME"), ".mine", "secret.pem"))
+      key_file       = file.path(normalizePath("~"), ".mine", "secret.pem"))
     paths <- app_secret_paths(appname = "mine")
     expect_equal(paths, exp_paths, label = "paths are subdirs of here()")
   })
@@ -45,7 +45,7 @@ test_that("passing a base_path", {
 
   exp_paths <- list(
     symmetric_file = file.path(base_path, dotted, "symmetric.rsa"),
-    key_file       = file.path(Sys.getenv("HOME"), dotted, "secret.pem"))
+    key_file       = file.path(normalizePath("~"), dotted, "secret.pem"))
 
   paths <- app_secret_paths(appname = appname, base_path = base_path)
   expect_equal(paths, exp_paths, label = "paths are subdirs of base_path")

@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 unlink(file.path(here::here(), '.user-settings'), recursive = TRUE)
-unlink(file.path(Sys.getenv("HOME", tempdir()), '.app-name'), recursive = TRUE)
+unlink(file.path(normalizePath("~"), '.app-name'), recursive = TRUE)
 ```
 # AppSecret
 
@@ -52,7 +52,7 @@ library(AppSecret)
 password_file <- file.path(here(), ".user-settings", Sys.getenv("USER"), "password")
 
 asm <- app_secret_manager(symmetric_file = file.path(here(), ".user-settings", Sys.getenv("USER"), "symmetric.rsa"),
-                          key_file       = file.path(Sys.getenv("HOME"), ".app-name", "secret.pem"))
+                          key_file       = file.path(normalizePath("~"), ".app-name", "secret.pem"))
 asm$symmetric_file
 asm$key_file
 
@@ -74,7 +74,7 @@ library(AppSecret)
 password_file <- file.path(here(), ".user-settings", Sys.getenv("USER"), "password")
 
 asm <- app_secret_manager(symmetric_file = file.path(here(), ".user-settings", Sys.getenv("USER"), "symmetric.rsa"),
-                          key_file       = file.path(Sys.getenv("HOME"), ".app-name", "secret.pem"))
+                          key_file       = file.path(normalizePath("~"), ".app-name", "secret.pem"))
 
 password <- asm$decrypt_file(password_file)
 password

@@ -4,7 +4,7 @@
 \alias{app_secret_paths}
 \title{app_secret_paths}
 \usage{
-app_secret_paths(appname = NULL, base_path = Sys.getenv("HOME"))
+app_secret_paths(appname = NULL, base_path = normalizePath("~"))
 }
 \arguments{
 \item{appname}{The application name, this will be prepended with a '.', and forced to be lowercase}

@@ -30,9 +30,10 @@
 #'   paths <- app_secret_paths(appname = "dull-app", base_path = file.path(here()))
 #' }
 #'
+#' @importFrom whoami username
 #' @importFrom here here
 #' @export
-app_secret_paths <- function(appname = NULL, base_path = Sys.getenv("HOME")) {
+app_secret_paths <- function(appname = NULL, base_path = normalizePath("~")) {
   if (missing(appname)) {
     stop("Cannot continue without an application name", call. = FALSE)
   }
@@ -42,7 +43,7 @@ app_secret_paths <- function(appname = NULL, base_path = Sys.getenv("HOME")) {
   app_dot_dir <- paste(".", tolower(appname), sep = "")
   sym_name <- "symmetric.rsa"
   if (Sys.getenv("APP_SECRET_USE_HERE", "") != "") {
-    vault <- file.path(here(), ".user-settings", Sys.getenv("USER"))
+    vault <- file.path(here(), ".user-settings", whoami::username())
   } else {
     vault <- file.path(base_path, app_dot_dir)
   }
@@ -50,7 +51,7 @@ app_secret_paths <- function(appname = NULL, base_path = Sys.getenv("HOME")) {
   return(
     list(
       symmetric_file = file.path(vault, sym_name),
-      key_file       = file.path(Sys.getenv("HOME"), app_dot_dir, "secret.pem")
+      key_file       = file.path(normalizePath("~"), app_dot_dir, "secret.pem")
     )
   )
 }
