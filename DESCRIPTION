@@ -12,7 +12,8 @@ Imports:
     base64enc,
     here,
     PKI,
-    R6 (>= 2.2.0)
+    R6 (>= 2.2.0),
+    whoami
 Encoding: UTF-8
 LazyData: true
 Suggests: 

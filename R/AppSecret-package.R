@@ -11,7 +11,7 @@
 #' files, streams or data. The 256bit key and the encrpyted files may be stored
 #' with the application, either in the repository or on disk so long as the
 #' private key is kept secret. By default this is a user's home directory as
-#' defined in \code{Sys.getenv("HOME")}.
+#' defined by \code{normalizePath("~")}.
 #'
 #' @import PKI
 #' @importFrom base64enc base64encode

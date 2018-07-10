@@ -38,7 +38,7 @@ library(AppSecret)
 password_file <- file.path(here(), ".user-settings", Sys.getenv("USER"), "password")
 
 asm <- app_secret_manager(symmetric_file = file.path(here(), ".user-settings", Sys.getenv("USER"), "symmetric.rsa"),
-                          key_file       = file.path(Sys.getenv("HOME"), ".app-name", "secret.pem"))
+                          key_file       = file.path(normalizePath("~"), ".app-name", "secret.pem"))
 asm$symmetric_file
 #> [1] "/Users/hrards/code/AppSecret/.user-settings/hrards/symmetric.rsa"
 asm$key_file
@@ -53,8 +53,8 @@ file.exists(password_file)
 #> [1] TRUE
 
 asm$read_encrypted(password_file)
-#>  [1] 40 4d ac 4c 5d b6 ce d6 2d 88 08 af 6b 52 f6 3f a7 d2 99 fc 35 aa 40
-#> [24] 7c c6 aa 44 91 de 27 28 5b
+#>  [1] 28 df 24 f8 80 18 0c 52 2e 1d d6 23 0b 1b 96 dd 4a 2c 6a 64 d8 87 24
+#> [24] e3 cd 1e 6a 90 42 f7 30 c9
 ```
 
 Somewhere in your application
@@ -66,7 +66,7 @@ library(AppSecret)
 password_file <- file.path(here(), ".user-settings", Sys.getenv("USER"), "password")
 
 asm <- app_secret_manager(symmetric_file = file.path(here(), ".user-settings", Sys.getenv("USER"), "symmetric.rsa"),
-                          key_file       = file.path(Sys.getenv("HOME"), ".app-name", "secret.pem"))
+                          key_file       = file.path(normalizePath("~"), ".app-name", "secret.pem"))
 
 password <- asm$decrypt_file(password_file)
 #> decrypting symmetric file success
