@@ -1,12 +1,24 @@
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+
 language: R
 sudo: false
 cache: packages
 
-r:
-  - 3.5
-  - 3.4
-  - 3.3
+os:
+  - linux
+  - osx
 
+r:
+  - 3.1
+  - 3.2
+  - 3.3
+  - oldrel
+  - release
+  - devel
+
+#
+# secure var is COVERALLS_TOKEN
+#
 env:
   global:
     - CI_NAME=travis-pro
@@ -20,4 +32,4 @@ r_github_packages:
 
 after_success:
   - export CI_BRANCH=$TRAVIS_BRANCH
-  - Rscript -e 'covr::coveralls()'
+  - test $TRAVIS_R_VERSION_STRING = "release" && Rscript -e 'covr::coveralls()'
