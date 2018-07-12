@@ -9,6 +9,7 @@ brew_packages:
 
 r_packages:
   - pkgdown
+  - covr
 
 os:
   - linux
@@ -40,10 +41,7 @@ env:
     - secure: YG2k5WXyNUDpTDfo6zlBhChgkNNElc4yl0IEccmE9cUPLGB4BIlLJdHSpH0fq4JtSsxPGkiepW/G0lZLQCfzOKZIEtnorK7WJZ4nKQtxNFjf82/Ut38yd3qyQ/brM6Mb3BaG8Cieczf0vaxOVVWPaiJikUIuxAM1QY3Uj/yK/kcry7YmylaYtTTF4xYmYCptT6FbJOz+NkzsGUFx+JtFLMM+4kREdzTlaKxLUZYwCfd8KILYKoutJehiAywJfBGXeEayPLDlnvss0bfH0P7/VsA8CCZ0mDT16wv4acJX7TEfqXdBzWTWMJAYbbeYtVxgZqzT2tlqBBnDhsuj24NUUJqrP3eAyB47N00AhPsPUDrsb+8VZ0p62iH/ehxahcFH0Q/JOhknZasch/bLOBkWY1tUc+stzgjxS/c6JET1cKAmfh0Nvmqs7MFfHCM8MB6ZdWvC4dxDe2f+6ZiZn7jsM/AfB4CbFrMAtiPu7op8BkPp9yLCHomilf7MUMvymIT8MDmAZsvhoHJTvTSDHRItSZssRhHgZuxnXmVvP8d2aixWHWiHFmNCCzEk2sZWib5TS3DboBA9zOI1m8xjBS7sZ1HvsUQgjkxwalJTdSFB35CJdhqozfevV/jJfM+/lkVb3XuAC72grcicMILuwB+GbqtZvdotiU/QhOSf3j5Xp+c=
     - NOT_CRAN=true
 
-# before_install: echo "options(repos = c(CRAN='http://cran.rstudio.com'))" > ~/.Rprofile
-
-r_github_packages:
-  - r-lib/covr
+before_install: echo "options(repos = c(CRAN='http://cran.rstudio.com'))" > ~/.Rprofile
 
 after_success:
   - export CI_BRANCH=$TRAVIS_BRANCH
