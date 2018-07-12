@@ -1,4 +1,5 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+# https://github.com/travis-ci/travis-build/blob/master/lib/travis/build/script/r.rb
 
 language: R
 sudo: false
@@ -10,6 +11,8 @@ brew_packages:
 r_packages:
   - pkgdown
   - covr
+  - here
+  - whoami
 
 os:
   - linux
