@@ -10,9 +10,6 @@ brew_packages:
 
 r_packages:
   - pkgdown
-  - covr
-  - here
-  - whoami
 
 os:
   - linux
@@ -32,6 +29,11 @@ matrix:
       os: osx
     - r: 3.2
       os: osx
+    - r: 3.2
+      os: osx
+  allowed_failures:
+    - os: osx
+      r: devel
 
 #
 # first secure var is COVERALLS_TOKEN
