@@ -64,7 +64,7 @@ app_secret <-
                 if (!success) stop("failed to create directory", call. = FALSE)
               }
               symmetric_password <-
-                PKI::PKI.encrypt(charToRaw(base64encode(PKI::PKI.random(32))), key = self$key)
+                PKI::PKI.encrypt(charToRaw(base64enc::base64encode(PKI::PKI.random(32))), key = self$key)
               writeBin(symmetric_password, con = file, raw())
 
               return(private$decrypt_sym_key())
@@ -153,8 +153,9 @@ app_secret <-
 
             ## helpful method to get a new filename
             path_in_vault = function(filename = NULL) {
-              if(missing(filename)) stop("filename is required")
-              return(file.path(dirname(self$symmetric_file), filename))
+              if(missing(filename))  stop("filename is required")
+              if(nchar(filename)==0) stop("invalid filename")
+              return(file.path(dirname(self$symmetric_file), make.names(filename)))
             },
 
             ## read encrypted - absolute path please
@@ -167,6 +168,7 @@ app_secret <-
 
             ## set the debug flag - chainable
             set_debug = function(debug = FALSE) {
+              if(!is.logical(debug)) stop("logical expected")
               self$debug <- debug
               return(invisible(self))
             },
