@@ -4,6 +4,9 @@ language: R
 sudo: false
 cache: packages
 
+brew_packages:
+ - libgit2
+
 os:
   - linux
   - osx
