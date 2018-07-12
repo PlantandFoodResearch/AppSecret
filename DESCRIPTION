@@ -3,12 +3,13 @@ Type: Package
 Title: R6 Package to Work with PKI and AES-256-CBC
 Version: 0.1.0
 Authors@R: c(
-  person("Roy", "Storey", email = "roy.storey@plantandfood.co.nz", role = c("aut", "cre")))
+  person("Roy", "Storey", email = "roy.storey@plantandfood.co.nz", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-1375-7136")))
 Description: The goal of AppSecret is to manage application secrets for
     users, be they developers or test/production service users.
 BugReports: https://github.com/PlantandFoodResearch/AppSecret/issues
 License: MIT + file LICENSE
 Imports:
+    backports,
     base64enc,
     here,
     PKI,

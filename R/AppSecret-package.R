@@ -13,6 +13,7 @@
 #' private key is kept secret. By default this is a user's home directory as
 #' defined by \code{normalizePath("~")}.
 #'
+#' @import backports
 #' @import PKI
 #' @importFrom base64enc base64encode
 #' @importFrom R6 R6Class
