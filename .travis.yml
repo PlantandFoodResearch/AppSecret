@@ -54,6 +54,7 @@ after_success:
 
 before_deploy:
   - Rscript -e 'withr::with_temp_libpaths(action = "prefix", code = { devtools::install(pkg = ".", reload = FALSE); pkgdown::build_site(pkg = "."); })'
+  - touch gh-pages/.nojekyll
 
 deploy:
   provider: pages
@@ -65,3 +66,5 @@ deploy:
   github_token: $GITHUB_PAT
   on:
     branch: master
+    repo: PlantandFoodResearch/AppSecret
+    condition: $TRAVIS_R_VERSION_STRING = "release"
