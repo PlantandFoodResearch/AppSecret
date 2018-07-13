@@ -18,12 +18,13 @@ Imports:
 Encoding: UTF-8
 LazyData: true
 Suggests: 
+    covr,
+    knitr,
+    pkgdown,
+    rmarkdown,
     roxygen2 (>= 6.0.1),
     testthat,
-    covr,
-    withr,
-    knitr,
-    rmarkdown
+    withr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr

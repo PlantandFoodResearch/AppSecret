@@ -53,7 +53,7 @@ after_success:
   - test $TRAVIS_R_VERSION_STRING = "release" && Rscript -e 'covr::coveralls()'
 
 before_deploy:
-  - Rscript -e "pkgdown::build_site()"
+  - Rscript -e 'withr::with_temp_libpaths(action = "prefix", code = { devtools::install(pkg = ".", reload = FALSE); pkgdown::build_site(pkg = "."); })'
 
 deploy:
   provider: pages
