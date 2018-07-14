@@ -31,7 +31,7 @@ matrix:
       os: osx
     - r: 3.2
       os: osx
-  allowed_failures:
+  allow_failures:
     - os: osx
       r: devel
 
