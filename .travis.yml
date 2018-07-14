@@ -50,7 +50,7 @@ before_install: echo "options(repos = c(CRAN='http://cran.rstudio.com'))" > ~/.R
 
 after_success:
   - export CI_BRANCH=$TRAVIS_BRANCH
-  - test $TRAVIS_R_VERSION_STRING = "release" && Rscript -e 'covr::coveralls()'
+  - test $TRAVIS_R_VERSION_STRING = "release" && Rscript -e 'covr::coveralls(function_exclusions = "\\.onLoad")'
 
 before_deploy:
   - Rscript -e 'withr::with_temp_libpaths(action = "prefix", code = { devtools::install(pkg = ".", reload = FALSE); pkgdown::build_site(pkg = "."); })'
