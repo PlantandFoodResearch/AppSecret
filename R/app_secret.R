@@ -37,7 +37,7 @@ app_secret <-
               if(!file.exists(self$symmetric_file)) {
                 return(NA)
               }
-              contents <- readBin(con = self$symmetric_file, raw(), n = 256, size = 1)
+              contents <- readBin(con = self$symmetric_file, what = raw(), n = 256, size = 1)
               ## https://stackoverflow.com/a/12195574/7456461 for tryCatch example
               caught <- tryCatch(
                 {
@@ -65,7 +65,7 @@ app_secret <-
               }
               symmetric_password <-
                 PKI::PKI.encrypt(charToRaw(base64enc::base64encode(PKI::PKI.random(32))), key = self$key)
-              writeBin(symmetric_password, con = file, raw())
+              writeBin(symmetric_password, con = file)
 
               return(private$decrypt_sym_key())
             }
@@ -164,7 +164,7 @@ app_secret <-
               if (! file.exists(file)) {
                 return(charToRaw(""))
               }
-              readBin(con = file, n = file.size(file), raw())
+              readBin(con = file, what = raw(), n = file.size(file))
             },
 
             ## set the debug flag - chainable
@@ -185,6 +185,6 @@ app_secret <-
               if(! is.raw(data)) {
                 stop("data should be raw format")
               }
-              writeBin(data, con = file, raw())
+              writeBin(data, con = file)
             }
           ))
