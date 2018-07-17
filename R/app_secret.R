@@ -10,7 +10,7 @@
 #' @return app_secret instance
 #' @export
 #'
-app_secret_manager <- function(symmetric_file, key_file) {
+app_secret_manager <- function(symmetric_file, key_file, ...) {
   app_secret$new(symmetric_file = symmetric_file, key_file = key_file)
 }
 
@@ -37,7 +37,7 @@ app_secret <-
               if(!file.exists(self$symmetric_file)) {
                 return(NA)
               }
-              contents <- readBin(con = self$symmetric_file, raw(), n = 256, size = 1)
+              contents <- readBin(con = self$symmetric_file, what = raw(), n = 256, size = 1)
               ## https://stackoverflow.com/a/12195574/7456461 for tryCatch example
               caught <- tryCatch(
                 {
@@ -64,8 +64,8 @@ app_secret <-
                 if (!success) stop("failed to create directory", call. = FALSE)
               }
               symmetric_password <-
-                PKI::PKI.encrypt(charToRaw(base64encode(PKI::PKI.random(32))), key = self$key)
-              writeBin(symmetric_password, con = file, raw())
+                PKI::PKI.encrypt(charToRaw(base64enc::base64encode(PKI::PKI.random(32))), key = self$key)
+              writeBin(symmetric_password, con = file)
 
               return(private$decrypt_sym_key())
             }
@@ -153,8 +153,10 @@ app_secret <-
 
             ## helpful method to get a new filename
             path_in_vault = function(filename = NULL) {
-              if(missing(filename)) stop("filename is required")
-              return(file.path(dirname(self$symmetric_file), filename))
+              if(missing(filename))  stop("filename is required")
+#              if(length(filename)>1) stop("only one filename required")
+              if(any(nchar(filename)==0)) stop("invalid filename")
+              return(file.path(dirname(self$symmetric_file), make.names(filename)))
             },
 
             ## read encrypted - absolute path please
@@ -162,11 +164,12 @@ app_secret <-
               if (! file.exists(file)) {
                 return(charToRaw(""))
               }
-              readBin(con = file, n = file.size(file), raw())
+              readBin(con = file, what = raw(), n = file.size(file))
             },
 
             ## set the debug flag - chainable
             set_debug = function(debug = FALSE) {
+              if(!is.logical(debug)) stop("logical expected")
               self$debug <- debug
               return(invisible(self))
             },
@@ -182,6 +185,6 @@ app_secret <-
               if(! is.raw(data)) {
                 stop("data should be raw format")
               }
-              writeBin(data, con = file, raw())
+              writeBin(data, con = file)
             }
           ))
