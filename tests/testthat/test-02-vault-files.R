@@ -12,7 +12,9 @@ test_that("constructing paths", {
                file.path(exp_dir, "password"))
 
   expect_error(asm$path_in_vault(), "filename is required")
+  expect_error(asm$path_in_vault(""), "invalid filename")
+  expect_error(asm$path_in_vault(c("username", "password")), "only one filename required")
 
-  expect_equal(asm$path_in_vault(c("username", "password")),
-               file.path(exp_dir, c("username", "password")))
+  # expect_equal(asm$path_in_vault(c("username", "password")),
+  #              file.path(exp_dir, c("username", "password")))
 })

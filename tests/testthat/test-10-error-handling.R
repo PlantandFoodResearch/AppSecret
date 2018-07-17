@@ -38,7 +38,7 @@ test_that("symmetric key is noise", {
   asm <- app_secret_manager(symmetric_file = tempfile(),
                             key_file       = tempfile())
   ## this is purposefully incorrect usage - do not copy
-  writeBin(charToRaw("noise"), con = asm$symmetric_file, raw())
+  writeBin(charToRaw("noise"), con = asm$symmetric_file)
 
   decrypted <- expect_message(asm$decrypt_data(enc), "invalid key object")
   expect_equal(decrypted, NA, label = "NA as expected")
@@ -55,6 +55,8 @@ test_that("symmetric key is noise", {
   ## test debug flag setter true
   asm$set_debug(TRUE)
   expect_true(asm$debug, label = "got set")
+  expect_error(asm$set_debug("foo"), label="logical expected")
+
   output <- capture_messages(asm$decrypt_data(enc))
   expect_match(output, "^Error in PKI::PKI\\.decrypt", all = FALSE, perl = TRUE)
 })
