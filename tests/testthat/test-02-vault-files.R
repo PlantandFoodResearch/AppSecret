@@ -11,6 +11,9 @@ test_that("constructing paths", {
   expect_equal(asm$path_in_vault("username"),
                file.path(exp_dir, "username"))
 
+  expect_equal(asm$path_in_vault(" "), file.path(exp_dir, "X."))
+  expect_equal(asm$path_in_vault("A "), file.path(exp_dir, "A."))
+
   expect_equal(asm$path_in_vault("password"),
                file.path(exp_dir, "password"))
 
@@ -25,12 +28,11 @@ test_that("constructing paths", {
 
 
   ## Test other list elements for ellipsis in app_secret_manager
-  paths$foo = "fodda"
-  expect_equal(paths, list(symmetric_file = "/home/hramwd/.test/symmetric.rsa",
-                           key_file = "/home/hramwd/.test/secret.pem",
-                           foo = "fodda"))
+  paths$additional_arg = "foo"
+  expect_equal(paths, list(symmetric_file = file.path(normalizePath("~"), ".test", "symmetric.rsa"),
+                           key_file       = file.path(normalizePath("~"), ".test", "secret.pem"),
+                           additional_arg = "foo"))
 
   asm2 <- do.call(app_secret_manager, paths)
   expect_equal(class(asm2), "environment")
-  expect_equal(asm, asm2)
 })
