@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Travis build status](https://travis-ci.com/PlantandFoodResearch/AppSecret.svg?token=Kpqpmk91fYg5k9hdqK3y&branch=master)](https://travis-ci.com/PlantandFoodResearch/AppSecret) [![Coverage Status](https://coveralls.io/repos/github/PlantandFoodResearch/AppSecret/badge.svg?branch=master&t=Z7xp1S)](https://coveralls.io/github/PlantandFoodResearch/AppSecret?branch=master)
+[![Travis build status](https://travis-ci.com/PlantandFoodResearch/AppSecret.svg?token=Kpqpmk91fYg5k9hdqK3y&branch=master)](https://travis-ci.com/PlantandFoodResearch/AppSecret) [![Coverage Status](https://coveralls.io/repos/github/PlantandFoodResearch/AppSecret/badge.svg?branch=master&t=Z7xp1S)](https://coveralls.io/github/PlantandFoodResearch/AppSecret?branch=master) [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
 AppSecret
 =========
@@ -53,8 +53,8 @@ file.exists(password_file)
 #> [1] TRUE
 
 asm$read_encrypted(password_file)
-#>  [1] 28 df 24 f8 80 18 0c 52 2e 1d d6 23 0b 1b 96 dd 4a 2c 6a 64 d8 87 24
-#> [24] e3 cd 1e 6a 90 42 f7 30 c9
+#>  [1] 00 75 9c 73 61 d5 e3 f1 1e 6a 82 63 c0 47 ba 8e 8f 38 1d dd 7c 5c a2
+#> [24] 76 f0 a3 46 ec 85 b6 f0 96
 ```
 
 Somewhere in your application

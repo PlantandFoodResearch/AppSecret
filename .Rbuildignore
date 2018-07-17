@@ -4,3 +4,5 @@
 ^LICENSE\.md$
 ^\.travis\.yml$
 ^\.user-settings$
+^_pkgdown\.yml$
+^gh-pages$
