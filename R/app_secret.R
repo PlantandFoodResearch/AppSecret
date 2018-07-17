@@ -10,7 +10,7 @@
 #' @return app_secret instance
 #' @export
 #'
-app_secret_manager <- function(symmetric_file, key_file) {
+app_secret_manager <- function(symmetric_file, key_file, ...) {
   app_secret$new(symmetric_file = symmetric_file, key_file = key_file)
 }
 
@@ -154,6 +154,7 @@ app_secret <-
             ## helpful method to get a new filename
             path_in_vault = function(filename = NULL) {
               if(missing(filename))  stop("filename is required")
+              if(length(filename)>1) stop("only one filename required")
               if(nchar(filename)==0) stop("invalid filename")
               return(file.path(dirname(self$symmetric_file), make.names(filename)))
             },
