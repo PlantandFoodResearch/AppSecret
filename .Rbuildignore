@@ -3,6 +3,7 @@
 ^README\.Rmd$
 ^LICENSE\.md$
 ^\.travis\.yml$
+^\.ci$
 ^\.user-settings$
 ^_pkgdown\.yml$
 ^gh-pages$

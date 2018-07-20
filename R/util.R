@@ -99,9 +99,9 @@ app_secret_ask <- function(obj = NULL, file = NULL,
   if(missing(file)) return(FALSE)
   if(file.exists(file)) return(FALSE)
 
-  password  <- getPass::getPass(message)  # nocov
-  encrypted <- obj$encrypt_data(password) # nocov
+  password  <- getPass::getPass(message)  ## no-covr-until 20190101
+  encrypted <- obj$encrypt_data(password) ## no-covr-until 20190101
 
-  obj$write_encrypted(encrypted, file)    # nocov
-  return(TRUE)                            # nocov
+  obj$write_encrypted(encrypted, file)    ## no-covr-until 20190101
+  return(TRUE)                            ## no-covr-until 20190101
 }
