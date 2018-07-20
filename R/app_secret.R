@@ -151,19 +151,6 @@ app_secret <-
               self$encrypt_data(paste(readLines(con = file, n = file.size(file)), collapse = "\n"))
             },
 
-            forget_everything = function() {
-              vault_path <- dirname(self$symmetric_file)
-              unlink(vault_path, recursive = TRUE)
-            },
-
-            forget_something = function(filename) {
-              ## file.is_absolute sigh...
-              if(normalizePath(filename) ) {
-                filename <- self$path_in_vault(filename)
-              }
-              unlink(filename)
-            },
-
             ## helpful method to get a new filename
             path_in_vault = function(filename = NULL) {
               if(missing(filename)) stop("filename is required")
