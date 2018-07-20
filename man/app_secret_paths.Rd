@@ -2,7 +2,7 @@
 % Please edit documentation in R/util.R
 \name{app_secret_paths}
 \alias{app_secret_paths}
-\title{app_secret_paths}
+\title{Creating paths for AppSecret}
 \usage{
 app_secret_paths(appname = NULL, base_path = normalizePath("~"))
 }
@@ -38,4 +38,7 @@ Create paths as a utility and set of rules/expectations. Useful when trying to e
   paths <- app_secret_paths(appname = "dull-app", base_path = file.path(here()))
 }
 
+}
+\seealso{
+\code{\link{do.call}}, \code{\link{app_secret_manager}}
 }

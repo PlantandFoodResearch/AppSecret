@@ -1,7 +1,9 @@
 
-#' app_secret_paths
+#' Creating paths for AppSecret
 #'
 #' Create paths as a utility and set of rules/expectations. Useful when trying to enforce a convention.
+#'
+#' @name app_secret_paths
 #'
 #' @param appname    The application name, this will be prepended with a '.', and forced to be lowercase
 #' @param base_path  The base path to use for storing the symmetric and encrypted files
@@ -33,6 +35,7 @@
 #' @importFrom whoami username
 #' @importFrom here here
 #' @export
+#' @seealso \code{\link{do.call}}, \code{\link{app_secret_manager}}
 app_secret_paths <- function(appname = NULL, base_path = normalizePath("~")) {
   if (missing(appname)) {
     stop("Cannot continue without an application name", call. = FALSE)
@@ -60,29 +63,45 @@ app_secret_paths <- function(appname = NULL, base_path = normalizePath("~")) {
 #'
 #' Utility function designed for use as a standalone, or in \code{tap()}
 #'
+#' @name app_secret_ask
+#'
 #' @param obj     An AppSecret object
 #' @param file    path to the file to write encrypted data to
 #' @param message Message to present the user with
 #'
 #' @return Boolean as to whether user was asked for input.
 #'
-#' @example
-#' \donotrun{
+#' @import getPass
+#' @export
+#'
+#' @examples
+#'
+#' \dontrun{
+#'   asm       <- app_secret_manager()
 #'   pass_file <- asm$path_in_vault("password")
 #'   password  <- asm$tap(function(obj, file, message) {
-#'      if(possibly_ask_user(asm = obj, file = file, message = message)) {
+#'      if(app_secret_ask(asm = obj, file = file, message = message)) {
 #'         message("password stored in ", file)
 #'      }
 #'   }, file = pass_file)$decrypt_file(pass_file)
+#'
+#'   ## same, but without a message
+#'   password <-
+#'     asm$tap(func = app_secret_ask,
+#'             file = pass_file)$decrypt_file(pass_file)
+#'
+#'   ## or just as a save the password helper
+#'   app_secret_ask(obj = asm, file = pass_file)
 #' }
+#'
 app_secret_ask <- function(obj = NULL, file = NULL,
                            message = "Please provide your password") {
   if(missing(file)) return(FALSE)
   if(file.exists(file)) return(FALSE)
 
-  password  <- getPass::getPass(message)
-  encrypted <- obj$encrypt_data(password)
+  password  <- getPass::getPass(message)  # nocov
+  encrypted <- obj$encrypt_data(password) # nocov
 
-  obj$write_encrypted(encrypted, file)
-  return(TRUE)
+  obj$write_encrypted(encrypted, file)    # nocov
+  return(TRUE)                            # nocov
 }

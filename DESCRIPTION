@@ -12,6 +12,7 @@ License: MIT + file LICENSE
 Imports:
     backports,
     base64enc,
+    getPass,
     here,
     PKI,
     R6 (>= 2.2.0),
