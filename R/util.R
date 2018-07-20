@@ -55,3 +55,34 @@ app_secret_paths <- function(appname = NULL, base_path = normalizePath("~")) {
     )
   )
 }
+
+#' app_secret_ask
+#'
+#' Utility function designed for use as a standalone, or in \code{tap()}
+#'
+#' @param obj     An AppSecret object
+#' @param file    path to the file to write encrypted data to
+#' @param message Message to present the user with
+#'
+#' @return Boolean as to whether user was asked for input.
+#'
+#' @example
+#' \donotrun{
+#'   pass_file <- asm$path_in_vault("password")
+#'   password  <- asm$tap(function(obj, file, message) {
+#'      if(possibly_ask_user(asm = obj, file = file, message = message)) {
+#'         message("password stored in ", file)
+#'      }
+#'   }, file = pass_file)$decrypt_file(pass_file)
+#' }
+app_secret_ask <- function(obj = NULL, file = NULL,
+                           message = "Please provide your password") {
+  if(missing(file)) return(FALSE)
+  if(file.exists(file)) return(FALSE)
+
+  password  <- getPass::getPass(message)
+  encrypted <- obj$encrypt_data(password)
+
+  obj$write_encrypted(encrypted, file)
+  return(TRUE)
+}
