@@ -52,12 +52,11 @@ after_success:
   - export CI_BRANCH=$TRAVIS_BRANCH
   - |
     test $TRAVIS_R_VERSION_STRING = "release" && \
-    Rscript - <(cat - <<'EOF'
+    Rscript - <<'EOF'
     covr::coveralls(function_exclusions = "\\.onLoad"
                     , line_exclusions   = list("R/util.R" = c(102:106))
                     )
     EOF
-    )
 
 before_deploy:
   - Rscript -e 'withr::with_temp_libpaths(action = "prefix", code = { devtools::install(pkg = ".", reload = FALSE); pkgdown::build_site(pkg = "."); })'
