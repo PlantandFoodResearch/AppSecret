@@ -50,3 +50,46 @@ test_that("passing a base_path", {
   paths <- app_secret_paths(appname = appname, base_path = base_path)
   expect_equal(paths, exp_paths, label = "paths are subdirs of base_path")
 })
+
+test_that("getting a password", {
+  skip_if_not(interactive(), message = "cannot accept input")
+  tmp <- tempfile()
+  dir.create(tmp)
+  on.exit({
+    unlink(tmp)
+  }, add = TRUE)
+
+  sym_file <- file.path(tmp, "symmetric.rsa")
+  key_file <- file.path(tmp, "super-secret.pem")
+
+  asm <- app_secret_manager(symmetric_file = sym_file,
+                            key_file       = key_file)
+  pass_file <- asm$path_in_vault("password")
+
+  asked <- app_secret_ask(obj = asm, file = pass_file)
+  expect_true(asked)
+  expect_true(file.exists(pass_file))
+  expect_gt(file.size(pass_file), 0)
+})
+
+test_that("no getting a password as file exists", {
+  tmp <- tempfile()
+  dir.create(tmp)
+  on.exit({
+    unlink(tmp)
+  }, add = TRUE)
+
+  sym_file <- file.path(tmp, "symmetric.rsa")
+  key_file <- file.path(tmp, "super-secret.pem")
+
+  asm <- app_secret_manager(symmetric_file = sym_file,
+                            key_file       = key_file)
+  pass_file <- asm$path_in_vault("password")
+  ## forget the file
+  asked <- app_secret_ask(obj = asm)
+  expect_false(asked)
+
+  file.create(pass_file)
+  asked <- app_secret_ask(obj = asm, file = pass_file)
+  expect_false(asked)
+})

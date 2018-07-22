@@ -50,12 +50,20 @@ before_install: echo "options(repos = c(CRAN='http://cran.rstudio.com'))" > ~/.R
 
 after_success:
   - export CI_BRANCH=$TRAVIS_BRANCH
-  - test $TRAVIS_R_VERSION_STRING = "release" && Rscript -e 'covr::coveralls(function_exclusions = "\\.onLoad")'
+  - |
+    test $TRAVIS_R_VERSION_STRING = "release" && \
+    Rscript - <<'EOF'
+    covr::coveralls(function_exclusions = "\\.onLoad"
+                    , line_exclusions   = list("R/util.R" = c(102:106))
+                    )
+    EOF
 
 before_deploy:
   - Rscript -e 'withr::with_temp_libpaths(action = "prefix", code = { devtools::install(pkg = ".", reload = FALSE); pkgdown::build_site(pkg = "."); })'
   - touch gh-pages/.nojekyll
 
+notifications:
+  email: false
 deploy:
   provider: pages
   skip_cleanup: true
