@@ -34,6 +34,8 @@ matrix:
   allow_failures:
     - os: osx
       r: devel
+    - os: osx
+      r: 3.3
 
 #
 # first secure var is COVERALLS_TOKEN
