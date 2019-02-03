@@ -16,12 +16,12 @@ os:
   - osx
 
 r:
-  - 3.1
-  - 3.2
-  - 3.3
-  - oldrel
+#  - 3.1
+#  - 3.2
+#  - 3.3
+#  - oldrel
   - release
-  - devel
+#  - devel
 
 matrix:
   exclude:
@@ -52,13 +52,13 @@ before_install: echo "options(repos = c(CRAN='http://cran.rstudio.com'))" > ~/.R
 
 after_success:
   - export CI_BRANCH=$TRAVIS_BRANCH
-  - |
+  - |-
     test $TRAVIS_R_VERSION_STRING = "release" && \
-    Rscript - <<'EOF'
+    Rscript - <<'____EOF'
     covr::coveralls(function_exclusions = "\\.onLoad"
                     , line_exclusions   = list("R/util.R" = c(102:106))
                     )
-    EOF
+____EOF
 
 before_deploy:
   - Rscript -e 'withr::with_temp_libpaths(action = "prefix", code = { devtools::install(pkg = ".", reload = FALSE); pkgdown::build_site(pkg = "."); })'
