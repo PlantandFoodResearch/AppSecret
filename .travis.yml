@@ -10,32 +10,21 @@ brew_packages:
 
 r_packages:
   - pkgdown
+  - devtools
 
 os:
   - linux
   - osx
 
 r:
-  - 3.1
-  - 3.2
-  - 3.3
   - oldrel
   - release
   - devel
 
 matrix:
-  exclude:
-    - r: 3.1
-      os: osx
-    - r: 3.2
-      os: osx
-    - r: 3.2
-      os: osx
   allow_failures:
     - os: osx
       r: devel
-    - os: osx
-      r: 3.3
 
 #
 # first secure var is COVERALLS_TOKEN
