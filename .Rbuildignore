@@ -7,3 +7,4 @@
 ^\.user-settings$
 ^_pkgdown\.yml$
 ^gh-pages$
+^\.github$
