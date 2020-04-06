@@ -148,13 +148,13 @@
 <h4 class="hasAnchor">
 <a href="#app_secret_paths" class="anchor"></a><code>app_secret_paths</code>
 </h4>
-<p>All of this path munging is not really application code’s responsibility. There is a utility function <code>app_secret_paths</code> for doing this.</p>
+<p>All of this path munging is not really application codeâs responsibility. There is a utility function <code>app_secret_paths</code> for doing this.</p>
 <div class="sourceCode" id="cb5"><pre class="r"><span class="no">paths</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/app_secret_paths.html">app_secret_paths</a></span>(<span class="kw">appname</span> <span class="kw">=</span> <span class="st">"your-app-name"</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="no">paths</span>)
 <span class="co">#&gt; List of 2</span>
 <span class="co">#&gt;  $ symmetric_file: chr "/Users/hrards/.your-app-name/symmetric.rsa"</span>
 <span class="co">#&gt;  $ key_file      : chr "/Users/hrards/.your-app-name/secret.pem"</span></pre></div>
-<p>The <code><a href="https://rdrr.io/pkg/here/man/here.html">here()</a></code> function from the <code>here</code> package can be used by adding a value to the environment variable <code>APP_SECRET_USE_HERE</code> so that files can be stored with the application code. This is safe to do as the key pair will always be stored under a user’s home directory.</p>
+<p>The <code><a href="https://rdrr.io/pkg/here/man/here.html">here()</a></code> function from the <code>here</code> package can be used by adding a value to the environment variable <code>APP_SECRET_USE_HERE</code> so that files can be stored with the application code. This is safe to do as the key pair will always be stored under a userâs home directory.</p>
 <div class="sourceCode" id="cb6"><pre class="r"><span class="co">#&gt; using withr to safely temporarily set the variable in markdown</span>
 <span class="kw pkg">withr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/withr/man/with_envvar.html">with_envvar</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"APP_SECRET_USE_HERE"</span> <span class="kw">=</span> <span class="fl">1</span>), {
   <span class="no">paths</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/app_secret_paths.html">app_secret_paths</a></span>(<span class="kw">appname</span> <span class="kw">=</span> <span class="st">"another-name"</span>)
