@@ -1,9 +1,9 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 # https://github.com/travis-ci/travis-build/blob/master/lib/travis/build/script/r.rb
 
-language: R
-sudo: false
+language: r
 cache: packages
+dist: xenial
 
 brew_packages:
   - libgit2
@@ -19,9 +19,10 @@ os:
 r:
   - oldrel
   - release
+  - 3.6.3
   - devel
 
-matrix:
+jobs:
   allow_failures:
     - os: osx
       r: devel
@@ -56,13 +57,14 @@ before_deploy:
 notifications:
   email: false
 deploy:
+  strategy: git
   provider: pages
-  skip_cleanup: true
+  cleanup: false
   keep_history: true
-  local-dir: gh-pages
-  target-branch: gh-pages
-  committer-from-gh: true
-  github_token: $GITHUB_PAT
+  local_dir: gh-pages
+  target_branch: gh-pages
+  committer_from_gh: true
+  token: $GITHUB_PAT
   on:
     branch: master
     repo: PlantandFoodResearch/AppSecret
