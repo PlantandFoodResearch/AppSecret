@@ -26,6 +26,7 @@ jobs:
   allow_failures:
     - os: osx
       r: devel
+    - r: 3.6.3
 
 #
 # first secure var is COVERALLS_TOKEN
@@ -59,7 +60,7 @@ notifications:
 deploy:
   strategy: git
   provider: pages
-  cleanup: false
+  skip_cleanup: true
   keep_history: true
   local_dir: gh-pages
   target_branch: gh-pages
