@@ -156,7 +156,7 @@
 <span class="co">#&gt;  $ key_file      : chr "/Users/hrards/.your-app-name/secret.pem"</span></pre></div>
 <p>The <code><a href="https://rdrr.io/pkg/here/man/here.html">here()</a></code> function from the <code>here</code> package can be used by adding a value to the environment variable <code>APP_SECRET_USE_HERE</code> so that files can be stored with the application code. This is safe to do as the key pair will always be stored under a user’s home directory.</p>
 <div class="sourceCode" id="cb6"><pre class="r"><span class="co">#&gt; using withr to safely temporarily set the variable in markdown</span>
-<span class="kw pkg">withr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/withr/man/with_envvar.html">with_envvar</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"APP_SECRET_USE_HERE"</span> <span class="kw">=</span> <span class="fl">1</span>), {
+<span class="kw pkg">withr</span><span class="kw ns">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_envvar.html">with_envvar</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"APP_SECRET_USE_HERE"</span> <span class="kw">=</span> <span class="fl">1</span>), {
   <span class="no">paths</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/app_secret_paths.html">app_secret_paths</a></span>(<span class="kw">appname</span> <span class="kw">=</span> <span class="st">"another-name"</span>)
   <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="no">paths</span>)
 })
@@ -175,7 +175,7 @@
 <a href="#more-simple-application-code" class="anchor"></a>more simple application code</h4>
 <p>In less than 10 lines</p>
 <div class="sourceCode" id="cb8"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">AppSecret</span>)
-<span class="no">paths</span> <span class="kw">&lt;-</span> <span class="kw pkg">withr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/withr/man/with_envvar.html">with_envvar</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"APP_SECRET_USE_HERE"</span> <span class="kw">=</span> <span class="fl">1</span>),
+<span class="no">paths</span> <span class="kw">&lt;-</span> <span class="kw pkg">withr</span><span class="kw ns">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_envvar.html">with_envvar</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"APP_SECRET_USE_HERE"</span> <span class="kw">=</span> <span class="fl">1</span>),
                             <span class="fu"><a href="reference/app_secret_paths.html">app_secret_paths</a></span>(<span class="kw">appname</span> <span class="kw">=</span> <span class="st">"app-name"</span>))
 <span class="co">#&gt; create instance</span>
 <span class="no">asm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span>(<span class="no">app_secret_manager</span>, <span class="no">paths</span>)
