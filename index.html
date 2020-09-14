@@ -92,7 +92,9 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>AppSecret is not on CRAN. It is a private repository so create and expose <code>GITHUB_PAT</code> appropriately.</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"PlantandFoodResearch/AppSecret"</span>)</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"PlantandFoodResearch/AppSecret"</span>)
+</pre></div>
 <div id="github_pat" class="section level4">
 <h4 class="hasAnchor">
 <a href="#github_pat" class="anchor"></a>GITHUB_PAT</h4>
@@ -108,84 +110,96 @@
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
 <p>This is a basic example which shows you how to solve a common problem:</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">here</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">AppSecret</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/krlmlr/here">here</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/PlantandFoodResearch/AppSecret">AppSecret</a></span>)
 
-<span class="no">password_file</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/here/man/here.html">here</a></span>(), <span class="st">".user-settings"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span>(<span class="st">"USER"</span>), <span class="st">"password"</span>)
+<span class="kw">password_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/here/man/here.html">here</a></span>(), <span class="st">".user-settings"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span>(<span class="st">"USER"</span>), <span class="st">"password"</span>)
 
-<span class="no">asm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/app_secret_manager.html">app_secret_manager</a></span>(<span class="kw">symmetric_file</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/here/man/here.html">here</a></span>(), <span class="st">".user-settings"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span>(<span class="st">"USER"</span>), <span class="st">"symmetric.rsa"</span>),
-                          <span class="kw">key_file</span>       <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span>(<span class="st">"~"</span>), <span class="st">".app-name"</span>, <span class="st">"secret.pem"</span>))
-<span class="no">asm</span>$<span class="no">symmetric_file</span>
+<span class="kw">asm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/app_secret_manager.html">app_secret_manager</a></span>(symmetric_file = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/here/man/here.html">here</a></span>(), <span class="st">".user-settings"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span>(<span class="st">"USER"</span>), <span class="st">"symmetric.rsa"</span>),
+                          key_file       = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span>(<span class="st">"~"</span>), <span class="st">".app-name"</span>, <span class="st">"secret.pem"</span>))
+<span class="kw">asm</span><span class="op">$</span><span class="kw">symmetric_file</span>
 <span class="co">#&gt; [1] "/Users/hrards/code/AppSecret/.user-settings/hrards/symmetric.rsa"</span>
-<span class="no">asm</span>$<span class="no">key_file</span>
+<span class="kw">asm</span><span class="op">$</span><span class="kw">key_file</span>
 <span class="co">#&gt; [1] "/Users/hrards/.app-name/secret.pem"</span>
 
-<span class="no">encrypted</span> <span class="kw">&lt;-</span> <span class="no">asm</span>$<span class="fu">encrypt_data</span>(<span class="st">"this is my password"</span>)
+<span class="kw">encrypted</span> <span class="op">&lt;-</span> <span class="kw">asm</span><span class="op">$</span><span class="fu">encrypt_data</span>(<span class="st">"this is my password"</span>)
 <span class="co">#&gt; decrypting symmetric file success</span>
 
-<span class="no">asm</span>$<span class="fu">write_encrypted</span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">encrypted</span>, <span class="kw">file</span> <span class="kw">=</span> <span class="no">password_file</span>)
+<span class="kw">asm</span><span class="op">$</span><span class="fu">write_encrypted</span>(data = <span class="kw">encrypted</span>, file = <span class="kw">password_file</span>)
 
-<span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span>(<span class="no">password_file</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span>(<span class="kw">password_file</span>)
 <span class="co">#&gt; [1] TRUE</span>
 
-<span class="no">asm</span>$<span class="fu">read_encrypted</span>(<span class="no">password_file</span>)
+<span class="kw">asm</span><span class="op">$</span><span class="fu">read_encrypted</span>(<span class="kw">password_file</span>)
 <span class="co">#&gt;  [1] 00 75 9c 73 61 d5 e3 f1 1e 6a 82 63 c0 47 ba 8e 8f 38 1d dd 7c 5c a2</span>
-<span class="co">#&gt; [24] 76 f0 a3 46 ec 85 b6 f0 96</span></pre></div>
+<span class="co">#&gt; [24] 76 f0 a3 46 ec 85 b6 f0 96</span>
+</pre></div>
 <p>Somewhere in your application</p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">here</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">AppSecret</span>)
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/krlmlr/here">here</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/PlantandFoodResearch/AppSecret">AppSecret</a></span>)
 
-<span class="no">password_file</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/here/man/here.html">here</a></span>(), <span class="st">".user-settings"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span>(<span class="st">"USER"</span>), <span class="st">"password"</span>)
+<span class="kw">password_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/here/man/here.html">here</a></span>(), <span class="st">".user-settings"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span>(<span class="st">"USER"</span>), <span class="st">"password"</span>)
 
-<span class="no">asm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/app_secret_manager.html">app_secret_manager</a></span>(<span class="kw">symmetric_file</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/here/man/here.html">here</a></span>(), <span class="st">".user-settings"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span>(<span class="st">"USER"</span>), <span class="st">"symmetric.rsa"</span>),
-                          <span class="kw">key_file</span>       <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span>(<span class="st">"~"</span>), <span class="st">".app-name"</span>, <span class="st">"secret.pem"</span>))
+<span class="kw">asm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/app_secret_manager.html">app_secret_manager</a></span>(symmetric_file = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/here/man/here.html">here</a></span>(), <span class="st">".user-settings"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span>(<span class="st">"USER"</span>), <span class="st">"symmetric.rsa"</span>),
+                          key_file       = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span>(<span class="st">"~"</span>), <span class="st">".app-name"</span>, <span class="st">"secret.pem"</span>))
 
-<span class="no">password</span> <span class="kw">&lt;-</span> <span class="no">asm</span>$<span class="fu">decrypt_file</span>(<span class="no">password_file</span>)
+<span class="kw">password</span> <span class="op">&lt;-</span> <span class="kw">asm</span><span class="op">$</span><span class="fu">decrypt_file</span>(<span class="kw">password_file</span>)
 <span class="co">#&gt; decrypting symmetric file success</span>
-<span class="no">password</span>
-<span class="co">#&gt; [1] "this is my password"</span></pre></div>
+<span class="kw">password</span>
+<span class="co">#&gt; [1] "this is my password"</span>
+</pre></div>
 <div id="app_secret_paths" class="section level4">
 <h4 class="hasAnchor">
 <a href="#app_secret_paths" class="anchor"></a><code>app_secret_paths</code>
 </h4>
 <p>All of this path munging is not really application code’s responsibility. There is a utility function <code>app_secret_paths</code> for doing this.</p>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="no">paths</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/app_secret_paths.html">app_secret_paths</a></span>(<span class="kw">appname</span> <span class="kw">=</span> <span class="st">"your-app-name"</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="no">paths</span>)
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="kw">paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/app_secret_paths.html">app_secret_paths</a></span>(appname = <span class="st">"your-app-name"</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="kw">paths</span>)
 <span class="co">#&gt; List of 2</span>
 <span class="co">#&gt;  $ symmetric_file: chr "/Users/hrards/.your-app-name/symmetric.rsa"</span>
-<span class="co">#&gt;  $ key_file      : chr "/Users/hrards/.your-app-name/secret.pem"</span></pre></div>
+<span class="co">#&gt;  $ key_file      : chr "/Users/hrards/.your-app-name/secret.pem"</span>
+</pre></div>
 <p>The <code><a href="https://rdrr.io/pkg/here/man/here.html">here()</a></code> function from the <code>here</code> package can be used by adding a value to the environment variable <code>APP_SECRET_USE_HERE</code> so that files can be stored with the application code. This is safe to do as the key pair will always be stored under a user’s home directory.</p>
-<div class="sourceCode" id="cb6"><pre class="r"><span class="co">#&gt; using withr to safely temporarily set the variable in markdown</span>
-<span class="kw pkg">withr</span><span class="kw ns">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_envvar.html">with_envvar</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"APP_SECRET_USE_HERE"</span> <span class="kw">=</span> <span class="fl">1</span>), {
-  <span class="no">paths</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/app_secret_paths.html">app_secret_paths</a></span>(<span class="kw">appname</span> <span class="kw">=</span> <span class="st">"another-name"</span>)
-  <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="no">paths</span>)
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="co">#&gt; using withr to safely temporarily set the variable in markdown</span>
+<span class="kw">withr</span>::<span class="fu"><a href="https://withr.r-lib.org/reference/with_envvar.html">with_envvar</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"APP_SECRET_USE_HERE"</span> = <span class="fl">1</span>), {
+  <span class="kw">paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/app_secret_paths.html">app_secret_paths</a></span>(appname = <span class="st">"another-name"</span>)
+  <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="kw">paths</span>)
 })
 <span class="co">#&gt; List of 2</span>
 <span class="co">#&gt;  $ symmetric_file: chr "/Users/hrards/code/AppSecret/.user-settings/hrards/symmetric.rsa"</span>
-<span class="co">#&gt;  $ key_file      : chr "/Users/hrards/.another-name/secret.pem"</span></pre></div>
+<span class="co">#&gt;  $ key_file      : chr "/Users/hrards/.another-name/secret.pem"</span>
+</pre></div>
 <p>If the <code>.user-settings</code> path is not a desireable name the <code>base_path</code> argument may be passed.</p>
-<div class="sourceCode" id="cb7"><pre class="r"><span class="no">paths</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/app_secret_paths.html">app_secret_paths</a></span>(<span class="kw">appname</span> <span class="kw">=</span> <span class="st">"your-app-name"</span>, <span class="kw">base_path</span> <span class="kw">=</span> <span class="kw pkg">here</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/here/man/here.html">here</a></span>())
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="no">paths</span>)
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="kw">paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/app_secret_paths.html">app_secret_paths</a></span>(appname = <span class="st">"your-app-name"</span>, base_path = <span class="kw">here</span>::<span class="fu"><a href="https://rdrr.io/pkg/here/man/here.html">here</a></span>())
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="kw">paths</span>)
 <span class="co">#&gt; List of 2</span>
 <span class="co">#&gt;  $ symmetric_file: chr "/Users/hrards/code/AppSecret/.your-app-name/symmetric.rsa"</span>
-<span class="co">#&gt;  $ key_file      : chr "/Users/hrards/.your-app-name/secret.pem"</span></pre></div>
+<span class="co">#&gt;  $ key_file      : chr "/Users/hrards/.your-app-name/secret.pem"</span>
+</pre></div>
 </div>
 <div id="more-simple-application-code" class="section level4">
 <h4 class="hasAnchor">
 <a href="#more-simple-application-code" class="anchor"></a>more simple application code</h4>
 <p>In less than 10 lines</p>
-<div class="sourceCode" id="cb8"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">AppSecret</span>)
-<span class="no">paths</span> <span class="kw">&lt;-</span> <span class="kw pkg">withr</span><span class="kw ns">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_envvar.html">with_envvar</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"APP_SECRET_USE_HERE"</span> <span class="kw">=</span> <span class="fl">1</span>),
-                            <span class="fu"><a href="reference/app_secret_paths.html">app_secret_paths</a></span>(<span class="kw">appname</span> <span class="kw">=</span> <span class="st">"app-name"</span>))
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/PlantandFoodResearch/AppSecret">AppSecret</a></span>)
+<span class="kw">paths</span> <span class="op">&lt;-</span> <span class="kw">withr</span>::<span class="fu"><a href="https://withr.r-lib.org/reference/with_envvar.html">with_envvar</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"APP_SECRET_USE_HERE"</span> = <span class="fl">1</span>),
+                            <span class="fu"><a href="reference/app_secret_paths.html">app_secret_paths</a></span>(appname = <span class="st">"app-name"</span>))
 <span class="co">#&gt; create instance</span>
-<span class="no">asm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span>(<span class="no">app_secret_manager</span>, <span class="no">paths</span>)
+<span class="kw">asm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span>(<span class="kw">app_secret_manager</span>, <span class="kw">paths</span>)
 <span class="co">#&gt; where is the password file</span>
-<span class="no">paths</span>$<span class="no">password_file</span> <span class="kw">&lt;-</span> <span class="no">asm</span>$<span class="fu">path_in_vault</span>(<span class="st">"password"</span>)
+<span class="kw">paths</span><span class="op">$</span><span class="kw">password_file</span> <span class="op">&lt;-</span> <span class="kw">asm</span><span class="op">$</span><span class="fu">path_in_vault</span>(<span class="st">"password"</span>)
 <span class="co">#&gt; decrypt</span>
-<span class="no">password</span> <span class="kw">&lt;-</span> <span class="no">asm</span>$<span class="fu">decrypt_file</span>(<span class="no">paths</span>$<span class="no">password_file</span>)
+<span class="kw">password</span> <span class="op">&lt;-</span> <span class="kw">asm</span><span class="op">$</span><span class="fu">decrypt_file</span>(<span class="kw">paths</span><span class="op">$</span><span class="kw">password_file</span>)
 <span class="co">#&gt; decrypting symmetric file success</span>
-<span class="no">password</span>
-<span class="co">#&gt; [1] "this is my password"</span></pre></div>
+<span class="kw">password</span>
+<span class="co">#&gt; [1] "this is my password"</span>
+</pre></div>
 </div>
 </div>
 </div>
@@ -233,7 +247,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
